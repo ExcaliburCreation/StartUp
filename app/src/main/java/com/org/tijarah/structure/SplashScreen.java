@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    Intent intent = new Intent(SplashScreen.this, MapActivity.class);
+                    Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
                     startActivity(intent);
 
                     SplashScreen.this.finish();
