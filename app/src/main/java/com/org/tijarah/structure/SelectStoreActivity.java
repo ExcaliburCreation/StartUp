@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
 public class SelectStoreActivity extends AppCompatActivity {
 
     String[] stores = {"Store 1", "Store 2", "Store 3", "Store 4", "Store 5", "Store 6", "Store 7",};
@@ -17,16 +19,22 @@ public class SelectStoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_store);
 
+        Bundle bundle = this.getIntent().getExtras();
+
+        String[] places = bundle.getStringArray("Places");
         ListView listView = (ListView) findViewById(R.id.storeslist);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, stores);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, places);
 
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent(SelectStoreActivity.this, CategoriesActivity.class);
+
                 startActivity(intent);
             }
         });

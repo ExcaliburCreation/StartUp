@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TIJARAH</string>
 
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_main_activity">Main</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="selected_item_name">Selected Item</string>
@@ -23,4 +23,7 @@
     </string>
     <string name="title_activity_maps">Map</string>
     <string name="option_get_place">Near Places</string>
+    <string name="default_info_title">Info Title</string>
+    <string name="default_info_snippet">Snippet</string>
+    <string name="pick_place">Dialog Title</string>
 </resources>
