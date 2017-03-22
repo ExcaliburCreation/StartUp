@@ -26,4 +26,10 @@
     <string name="default_info_title">Info Title</string>
     <string name="default_info_snippet">Snippet</string>
     <string name="pick_place">Dialog Title</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

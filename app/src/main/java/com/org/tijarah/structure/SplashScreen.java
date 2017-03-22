@@ -1,7 +1,11 @@
 package com.org.tijarah.structure;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,24 +20,26 @@ import android.view.View;
  */
 public class SplashScreen extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+
         try {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-                    Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
+                    Intent intent = new Intent(SplashScreen.this, NavigationDrawer.class);
                     startActivity(intent);
 
                     SplashScreen.this.finish();
                 }
             }, 3000);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        }
+    }
 }

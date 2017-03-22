@@ -12,7 +12,7 @@ import org.w3c.dom.ls.LSException;
 
 import java.util.List;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class CategoriesActivity extends BaseActivity {
 
     String[] categories = {"Category 1","Category 2","Category 3","Category 4","Category 5","Category 6","Category 7"};
     @Override
