@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +34,7 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
@@ -96,6 +99,8 @@ public class NavigationDrawer extends AppCompatActivity
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
         mGoogleApiClient.connect();
+
+
     }
 
     @Override
@@ -120,9 +125,25 @@ public class NavigationDrawer extends AppCompatActivity
 
         mDefaultLocation = new LatLng(24.8615, 67.0099);
 
-        updateLocationUI();
 
         getDeviceLocation();
+
+        updateLocationUI();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(NavigationDrawer.this, CategoriesActivity.class);
+                intent.putExtra("Places", mLikelyPlaceNames);
+
+                startActivity(intent);
+
+                NavigationDrawer.this.finish();
+            }
+        }, 5000);
+
+
+
     }
 
     private void updateLocationUI() {
@@ -171,17 +192,19 @@ public class NavigationDrawer extends AppCompatActivity
             mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addressList ;
+            List<Address> addressList;
 
             try {
-                if(true ) {
+                if (mLastKnownLocation != null) {
                     addressList = geocoder.getFromLocation(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude(), 5);
 
                     String address = addressList.get(0).getAddressLine(0);
-                    Log.d("Address", "Device address location" + address);
+                    Log.d("Address", "Device address location: " + addressList.get(0).getAddressLine(0));
+
+
                 }
 
-            }catch (IOException e){
+            } catch (IOException e) {
                 Log.e(TAG, e.toString());
             }
 
@@ -191,6 +214,8 @@ public class NavigationDrawer extends AppCompatActivity
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         } else if (mLastKnownLocation != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
+
         } else {
             Log.d(TAG, "Current Location is null");
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
@@ -303,11 +328,6 @@ public class NavigationDrawer extends AppCompatActivity
                         }
                     }
 
-
-                    Intent intent = new Intent(NavigationDrawer.this, SelectStoreActivity.class);
-                    intent.putExtra("Places", mLikelyPlaceNames);
-
-                    startActivity(intent);
 
                     placeLikelihoods.release();
                 }

@@ -24,10 +24,15 @@ public class SelectStoreActivity extends AppCompatActivity {
         String[] places = bundle.getStringArray("Places");
         ListView listView = (ListView) findViewById(R.id.storeslist);
 
+        if(places != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, places);
+            listView.setAdapter(adapter);
+        }
+        else{
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, stores);
+            listView.setAdapter(adapter);
+        }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, places);
-
-        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

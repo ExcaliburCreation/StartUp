@@ -12,13 +12,14 @@ import org.w3c.dom.ls.LSException;
 
 import java.util.List;
 
-public class CategoriesActivity extends BaseActivity {
+public class CategoriesActivity extends AppCompatActivity {
 
     String[] categories = {"Category 1","Category 2","Category 3","Category 4","Category 5","Category 6","Category 7"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
+        super.setContentView(R.layout.activity_categories);
+        getSupportActionBar().setTitle("Category");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, categories);
 

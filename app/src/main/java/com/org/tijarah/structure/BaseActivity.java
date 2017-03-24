@@ -18,17 +18,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
 
         DrawerLayout drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_navigation_drawer, null);
 
         RelativeLayout relativeLayout = (RelativeLayout) drawerLayout.findViewById(R.id.content_navigation_drawer);
-        getLayoutInflater().inflate(layoutResID, relativeLayout, true);
-
-        super.setContentView(drawerLayout);
+        getLayoutInflater().inflate(R.layout.activity_navigation_drawer, relativeLayout, true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

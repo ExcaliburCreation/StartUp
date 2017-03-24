@@ -25,11 +25,12 @@
             android:layout_height="wrap_content"
             android:text="-" />
 
-        <TextView
+        <EditText
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Item" />
+            android:text="0"
+            android:textAlignment="center"/>
 
         <Button
             android:id="@+id/btnAdd"

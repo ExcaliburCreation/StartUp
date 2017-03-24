@@ -16,8 +16,7 @@ public class ItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.grid_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item, items);
 
         GridView gridView = (GridView)findViewById(R.id.itemsgridview);
         gridView.setAdapter(adapter);
