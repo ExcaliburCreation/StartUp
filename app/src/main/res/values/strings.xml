@@ -37,5 +37,5 @@
     <string name="splash_dialog_button_negative">OK</string>
     <string name="splash_dialog_button_postive">Allow</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_basket">Basket</string>
 </resources>

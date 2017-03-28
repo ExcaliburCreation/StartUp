@@ -126,29 +126,33 @@ public class NavigationDrawer extends AppCompatActivity
         mDefaultLocation = new LatLng(24.8615, 67.0099);
 
 
-        getDeviceLocation();
+        if(getDeviceLocation()){
 
-        updateLocationUI();
+            if (updateLocationUI()){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(NavigationDrawer.this, CategoriesActivity.class);
+                        intent.putExtra("Places", mLikelyPlaceNames);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(NavigationDrawer.this, CategoriesActivity.class);
-                intent.putExtra("Places", mLikelyPlaceNames);
+                        startActivity(intent);
 
-                startActivity(intent);
-
-                NavigationDrawer.this.finish();
+                        NavigationDrawer.this.finish();
+                    }
+                }, 5000);
             }
-        }, 5000);
+        }
+
+
+
 
 
 
     }
 
-    private void updateLocationUI() {
+    private boolean updateLocationUI() {
         if (mMap == null) {
-            return;
+            return false;
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -172,15 +176,17 @@ public class NavigationDrawer extends AppCompatActivity
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-
+            return true;
         } else {
             mMap.setMyLocationEnabled(false);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mLastKnownLocation = null;
+            return true;
         }
+
     }
 
-    private void getDeviceLocation() {
+    private boolean getDeviceLocation() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
@@ -211,16 +217,23 @@ public class NavigationDrawer extends AppCompatActivity
         }
 
         if (mCameraPosition != null) {
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
-        } else if (mLastKnownLocation != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
 
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+            return true;
+
+        } else if (mLastKnownLocation != null) {
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+            return true;
 
         } else {
             Log.d(TAG, "Current Location is null");
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            return false;
         }
+
+
     }
 
     @Override
@@ -251,7 +264,7 @@ public class NavigationDrawer extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.current_places_menu, menu);
+        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
         return true;
     }
 
@@ -263,7 +276,7 @@ public class NavigationDrawer extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.option_get_place) {
+        if (id == R.id.basket) {
             showNearPlaces();
         }
 
