@@ -15,19 +15,24 @@ import android.widget.RelativeLayout;
 
 public class BaseActivity extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DrawerLayout drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_navigation_drawer, null);
+    }
 
-        RelativeLayout relativeLayout = (RelativeLayout) drawerLayout.findViewById(R.id.content_navigation_drawer);
-        getLayoutInflater().inflate(R.layout.activity_navigation_drawer, relativeLayout, true);
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+
+
+        drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_navigation_drawer, null);
+        relativeLayout = (RelativeLayout) drawerLayout.findViewById(R.id.content_navigation_drawer);
+        getLayoutInflater().inflate(layoutResID, relativeLayout, true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
     }
 
     public boolean showNavDrawer(){

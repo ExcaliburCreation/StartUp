@@ -31,11 +31,16 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-   <!-- Dialogs-->
+    <!-- Dialogs-->
     <string name="splash_dialog_message">Internet Connection or Location is turned off! </string>
     <string name="splash_dialog_title"></string>
     <string name="splash_dialog_button_negative">OK</string>
     <string name="splash_dialog_button_postive">Allow</string>
 
     <string name="action_basket">Basket</string>
+    <string name="title_activity_location">LocationActivity</string>
+
+
+    <!--Buttons-->
+    <string name="btn_continue_text">Continue</string>
 </resources>

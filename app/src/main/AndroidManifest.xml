@@ -39,12 +39,21 @@
             android:name=".MapActivity"
             android:theme="@style/AlertDialog.AppCompat" />
         <activity android:name=".SelectStoreActivity" />
-        <activity android:name=".CategoriesActivity" />
-        <activity android:name=".ItemsActivity" />
-        <activity android:name=".SelectedItemActivity" />
-        <activity android:name=".BasketActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".PaymentSelectActivity" />
+        <activity android:name=".CategoriesActivity"
+            android:label="Category" />
+        <activity
+            android:name=".BaseActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ItemsActivity"
+            android:label="Items"/>
+        <activity android:name=".SelectedItemActivity"
+            android:label="Item"/>
+        <activity android:name=".BasketActivity"
+            android:label="Basket"/>
+        <activity android:name=".SignInActivity"
+            android:label="Sign in"/>
+        <activity android:name=".PaymentSelectActivity"
+            android:label="Payment"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -64,7 +73,8 @@
         <activity
             android:name=".NavigationDrawer"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".LocationActivity"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
@@ -21,6 +22,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,12 +49,14 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class MapsActivity extends AppCompatActivity implements Serializable,OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivity extends AppCompatActivity implements Serializable, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MapsActivity.class.getSimpleName();
 
@@ -70,11 +77,20 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
     private String mLikelyPlaceAttributions[] = new String[mMaxEntries];
     private LatLng mLikelyPlaceLatLngs[] = new LatLng[mMaxEntries];
 
+    private EditText editTextCity;
+    private EditText editTextArea;
+    private Button btnContinue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_location);
+        getSupportActionBar().setTitle("Location");
+
+        editTextCity = (EditText) findViewById(R.id.editTextCity);
+        editTextArea = (EditText) findViewById(R.id.editTextArea);
+        btnContinue = (Button) findViewById(R.id.btnContinue);
+        btnContinue.setEnabled(false);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -85,6 +101,17 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
                 .build();
         mGoogleApiClient.connect();
 
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MapsActivity.this, CategoriesActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
     }
 
 
@@ -93,16 +120,17 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG,"Failed to acquire a connection");
+        Log.d(TAG, "Failed to acquire a connection");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG,"Connection has been suspended");
+        Log.d(TAG, "Connection has been suspended");
     }
 
     private void getDeviceLocation() {
@@ -155,6 +183,8 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
         updateLocationUI();
 
         getDeviceLocation();
+
+        showNearPlaces();
     }
 
     private void updateLocationUI() {
@@ -169,14 +199,13 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
 
-        try{
+        try {
             boolean success = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_map));
 
-            if(!success){
-                Log.d(TAG,"Style parsing failed");
+            if (!success) {
+                Log.d(TAG, "Style parsing failed");
             }
-        }
-        catch (Resources.NotFoundException e){
+        } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find sytle");
         }
 
@@ -222,28 +251,44 @@ public class MapsActivity extends AppCompatActivity implements Serializable,OnMa
                     mLikelyPlaceAttributions = new String[mMaxEntries];
                     mLikelyPlaceLatLngs = new LatLng[mMaxEntries];
 
+                    String cityString = null;
+                    String areaString = null;
+
                     for (PlaceLikelihood places : placeLikelihoods) {
 
                         mLikelyPlaceNames[i] = (String) places.getPlace().getName();
                         mLikelyPlaceAddresses[i] = (String) places.getPlace().getAddress();
                         mLikelyPlaceAttributions[i] = (String) places.getPlace().getAttributions();
                         mLikelyPlaceLatLngs[i] = places.getPlace().getLatLng();
-                        Log.d(TAG, places.getPlace().getName().toString());
+
+                        cityString = (String) places.getPlace().getName();
+                        areaString = (String) places.getPlace().getAddress();
+                        Log.d("add", places.getPlace().getAddress().toString());
 
                         i++;
                         if (i > (mMaxEntries - 1)) {
                             break;
                         }
                     }
+                    Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                    try {
 
+                        List<Address> addresses = geocoder.getFromLocation(mLikelyPlaceLatLngs[0].latitude, mLikelyPlaceLatLngs[0].longitude, 1);
 
+                        Log.d("geo", addresses.get(0).toString());
 
-                    Intent intent = new Intent(MapsActivity.this, SelectStoreActivity.class);
-                    intent.putExtra("Places", mLikelyPlaceNames);
-                    startActivity(intent);
+                        editTextCity.setText(addresses.get(0).getAddressLine(1));
+                        editTextArea.setText(addresses.get(0).getAddressLine(0));
+
+                        btnContinue.setEnabled(true);
+                    } catch (IOException e) {
+                        Log.d(TAG, "Geocoder Error");
+                    }
+
                     placeLikelihoods.release();
 
-                  //  openPlacesDialog();
+
+                    //  openPlacesDialog();
                 }
             });
         } else {

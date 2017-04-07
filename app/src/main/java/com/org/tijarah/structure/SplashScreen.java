@@ -34,6 +34,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+       Session session = new Session();
         try {
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -67,7 +68,7 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            Intent intent = new Intent(SplashScreen.this, NavigationDrawer.class);
+                            Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
                             startActivity(intent);
 
                             SplashScreen.this.finish();
