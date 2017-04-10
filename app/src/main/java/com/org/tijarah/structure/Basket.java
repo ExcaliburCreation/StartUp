@@ -14,7 +14,7 @@ public class Basket {
 
 
     public Basket() {
-        items = new ArrayList<>();
+        items = new ArrayList<Item>();
     }
 
     public List<Item> getItems() {
@@ -24,7 +24,7 @@ public class Basket {
     public Item getItem(Item item) {
         if(items.contains(item)){
             for(Item i : items){
-                if(i.getName().equals(item)){
+                if(i.getName().equals(item.getName())){
                     return item;
                 }
             }
@@ -39,8 +39,18 @@ public class Basket {
         items.add(item);
     }
 
-    public void removeItems(Item item) {
-        items.remove(item);
+    public Item removeItem(Item item) {
+        if(items.contains(item)){
+            for(int i=0 ; i< items.size(); i++){
+                Item temp = items.get(i);
+                if(temp.getName().equals(item.getName())){
+                    items.remove(i);
+                }
+            }
+        }else{
+            return null;
+        }
+        return item;
     }
 
     public void setItems(List<Item> items) {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasketActivity extends AppCompatActivity {
@@ -22,16 +23,19 @@ public class BasketActivity extends AppCompatActivity {
     Button btnFinalizeOrder;
     TextView txtBasketTotal;
     ArrayAdapter<String> adapter;
+    List<Item> itemList = new ArrayList<Item>();
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
 
-        ListView listView = (ListView) findViewById(R.id.basket_list);
-        List<Item> itemList = Session.basket.items;
+         listView = (ListView) findViewById(R.id.basket_list);
 
-       Log.d(TAG, itemList.toString());
+        itemList = Session.basket.getItems();
+
+        Log.d(TAG, itemList.toString());
 
         if (itemList != null) {
 

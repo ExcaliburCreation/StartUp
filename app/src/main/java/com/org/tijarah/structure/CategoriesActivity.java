@@ -30,7 +30,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private ListView catListview;
     private CategoryAdapter mycategoryAdapter;
 
-    List<Category> cats = new ArrayList<>();
+    List<Category> cats = new ArrayList<Category>();
 
     Category category = new Category();
 

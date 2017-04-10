@@ -29,7 +29,7 @@ public class ItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_items);
 
 
-        itemList = new ArrayList<>();
+        itemList = new ArrayList<Item>();
 
         intent = getIntent();
 

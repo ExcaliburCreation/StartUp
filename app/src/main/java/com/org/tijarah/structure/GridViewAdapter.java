@@ -56,90 +56,98 @@ public class GridViewAdapter extends BaseAdapter {
             grid = new View(context);
             grid = inflater.inflate(R.layout.grid_item, null);
 
-            final ImageView itemImage = (ImageView) grid.findViewById(R.id.itemImage);
-            //      ImageView imageViewOverlay = (ImageView) grid.findViewById(R.id.imageViewOverlay);
-            Button btnRemove = (Button) grid.findViewById(R.id.btnRemove);
-            Button btnAdd = (Button) grid.findViewById(R.id.btnAdd);
-            TextView textViewItemName = (TextView) grid.findViewById(R.id.textViewItemName);
-            final TextView textViewCount = (TextView) grid.findViewById(R.id.textViewCount);
 
-            itemImage.setImageResource(R.drawable.supermarkets);
-
-            textViewItemName.setText(getItem(i).getName());
-
-            itemImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "Item Image Clicked", Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(context, SelectedItemActivity.class);
-                    context.startActivity(intent);
-                }
-            });
-
-            btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int count = item.getCount();
-                    itemImage.setVisibility(View.GONE);
-                    textViewCount.setVisibility(View.VISIBLE);
-                    textViewCount.setBackgroundColor(Color.DKGRAY);
-                    count++;
-                    textViewCount.setText(String.valueOf(count));
-                    if(Session.basket.getItems().contains(item)){
-                       Session.basket.getItem(item).setCount(count);
-                    }
-                    else {
-                        Session.basket.addItems(item);
-                    }
-
-                    item.setAdded(true);
-
-                }
-            });
-
-            btnRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (item.getCount() == 0) {
-                        itemImage.setVisibility(View.VISIBLE);
-                        itemImage.setImageResource(R.drawable.supermarkets);
-                        textViewCount.setVisibility(View.GONE);
-                        Session.basket.removeItems(item);
-
-                    } else if (item.getCount() >= 0) {
-
-                        int count = item.getCount();
-                        count--;
-                        textViewCount.setText(String.valueOf(count));
-                        item.setCount(count);
-
-                        if (item.getCount() == 0) {
-
-                            itemImage.setVisibility(View.VISIBLE);
-                            itemImage.setImageResource(R.drawable.supermarkets);
-                            textViewCount.setVisibility(View.GONE);
-
-                            if(Session.basket.getItems().contains(item)){
-                                Session.basket.getItem(item).setCount(count);
-                            }
-                            else {
-                                Session.basket.removeItems(item);
-                            }
-
-                        }
-                    }
-
-
-                }
-            });
 
         } else {
 
             grid = view;
         }
+        final ImageView itemImage = (ImageView) grid.findViewById(R.id.itemImage);
+        //      ImageView imageViewOverlay = (ImageView) grid.findViewById(R.id.imageViewOverlay);
+        Button btnRemove = (Button) grid.findViewById(R.id.btnRemove);
+        Button btnAdd = (Button) grid.findViewById(R.id.btnAdd);
+        TextView textViewItemName = (TextView) grid.findViewById(R.id.textViewItemName);
+        final TextView textViewCount = (TextView) grid.findViewById(R.id.textViewCount);
 
+        itemImage.setImageResource(R.drawable.supermarkets);
+
+        textViewItemName.setText(getItem(i).getName());
+
+        itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Item Image Clicked", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(context, SelectedItemActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int count = item.getCount();
+                itemImage.setVisibility(View.GONE);
+                textViewCount.setVisibility(View.VISIBLE);
+                textViewCount.setBackgroundColor(Color.DKGRAY);
+                count++;
+                textViewCount.setText(String.valueOf(count));
+                if(Session.basket.getItems().contains(item)){
+                    Session.basket.getItem(item).setCount(count);
+                }
+                else {
+                    Session.basket.addItems(item);
+                    Session.basket.getItem(item).setCount(count);
+                }
+
+                item.setAdded(true);
+
+            }
+        });
+
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (item.getCount() == 0) {
+                    itemImage.setVisibility(View.VISIBLE);
+                    itemImage.setImageResource(R.drawable.supermarkets);
+                    textViewCount.setVisibility(View.GONE);
+                    Session.basket.removeItem(item);
+
+                } else if (item.getCount() > 0) {
+
+                    int count = item.getCount();
+                    count--;
+                    textViewCount.setText(String.valueOf(count));
+                    item.setCount(count);
+
+                    if (count == 0) {
+
+                        itemImage.setVisibility(View.VISIBLE);
+                        itemImage.setImageResource(R.drawable.supermarkets);
+                        textViewCount.setVisibility(View.GONE);
+
+                        if(Session.basket.getItems().contains(item)){
+                            if(item.getCount() == 0){
+                                Session.basket.removeItem(item);
+                            }
+                            else{
+                                Session.basket.getItem(item).setCount(count);
+
+                            }
+                        }
+                        else {
+                            Session.basket.removeItem(item);
+
+                        }
+
+                    }
+                }
+
+
+            }
+        });
         return grid;
     }
 
