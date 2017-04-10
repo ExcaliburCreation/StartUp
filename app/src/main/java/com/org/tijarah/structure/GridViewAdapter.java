@@ -48,7 +48,7 @@ public class GridViewAdapter extends BaseAdapter {
         View grid;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final Item item = itemList.get(i+1);
+        final Item item = itemList.get(i);
 
         Log.d(TAG,itemList.toString());
         if (view == null) {
@@ -94,7 +94,7 @@ public class GridViewAdapter extends BaseAdapter {
                     }
 
                     item.setAdded(true);
-                    item.setCount(count);
+
                 }
             });
 
@@ -106,25 +106,28 @@ public class GridViewAdapter extends BaseAdapter {
                         itemImage.setVisibility(View.VISIBLE);
                         itemImage.setImageResource(R.drawable.supermarkets);
                         textViewCount.setVisibility(View.GONE);
-
-                        item.setAdded(true);
+                        Session.basket.removeItems(item);
 
                     } else if (item.getCount() >= 0) {
+
                         int count = item.getCount();
                         count--;
                         textViewCount.setText(String.valueOf(count));
                         item.setCount(count);
+
                         if (item.getCount() == 0) {
+
                             itemImage.setVisibility(View.VISIBLE);
                             itemImage.setImageResource(R.drawable.supermarkets);
                             textViewCount.setVisibility(View.GONE);
+
                             if(Session.basket.getItems().contains(item)){
                                 Session.basket.getItem(item).setCount(count);
                             }
                             else {
                                 Session.basket.removeItems(item);
                             }
-                            item.setAdded(true);
+
                         }
                     }
 
