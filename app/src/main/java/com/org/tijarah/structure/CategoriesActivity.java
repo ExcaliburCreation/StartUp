@@ -3,12 +3,19 @@ package com.org.tijarah.structure;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,15 +29,16 @@ import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
 
+    private static final String TAG = CategoriesActivity.class.getSimpleName();
     private ChildEventListener childEventListener;
     private FirebaseDatabase fbdb;
     private DatabaseReference dbr;
 
 
-    private ListView catListview;
+    private RecyclerView catRecyclerView;
     private CategoryAdapter mycategoryAdapter;
 
-    List<Category> cats = new ArrayList<Category>();
+   List<Category> cats = new ArrayList<Category>();
 
     Category category = new Category();
 
@@ -42,114 +50,55 @@ public class CategoriesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Categories");
 
         fbdb = fbdb.getInstance();
-        dbr = fbdb.getReference().child("Categories");
+        dbr = fbdb.getReference();
 
-        mycategoryAdapter = new CategoryAdapter(this,R.layout.categories,cats);
+        catRecyclerView = (RecyclerView) findViewById(R.id.catRecyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
+        catRecyclerView.setHasFixedSize(true);
+        generateData();
 
-         catListview = (ListView) findViewById(R.id.categoriesList);
+        mycategoryAdapter = new CategoryAdapter(cats);
 
-
-
-            catListview.setAdapter(mycategoryAdapter);
-
-
-
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-//                todos = dataSnapshot.getValue(TODO.class);
-//                todos.setKey(dataSnapshot.getKey());
-//                mTODOADAPTER.add(todos);
-//                todoLists.setAdapter(mTODOADAPTER);
-//
-                category = dataSnapshot.getValue(Category.class);
-                mycategoryAdapter.add(category);
-                catListview.setAdapter(mycategoryAdapter);
-
-            }
+        FirebaseRecyclerAdapter<Category,ViewHolder> adapter = new FirebaseRecyclerAdapter<Category, ViewHolder>(
+                Category.class,
+                R.layout.categort_list_row,
+                ViewHolder.class,
+                dbr.child("Categories").getRef()) {
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            protected void populateViewHolder(ViewHolder viewHolder, Category model, int position) {
+                viewHolder.textCatName.setText(model.getName());
+                Log.d(TAG,"Recycler View :"+ model.getName());
             }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
         };
 
-        dbr.addChildEventListener(childEventListener);
 
-//        childEventListener = new ChildEventListener() {
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//
-//                    String catname = (String) dataSnapshot.getValue();
-//                    adapter.add(catname);
-//                    listView.setAdapter(adapter);
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//
-//                dbr
-//            }
+        catRecyclerView.setLayoutManager(layoutManager);
+        catRecyclerView.setAdapter(adapter);
 
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(CategoriesActivity.this, ItemsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-    catListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            Intent intent = new Intent(CategoriesActivity.this, ItemsActivity.class);
-            intent.putExtra("Category", cats.get(i).getName());
-            startActivity(intent);
-
-        }
-    });
 
     }
 
 
+    private void generateData(){
+
+        for(int i=0 ; i< 10 ; i++){
+            Category category = new Category("Category "+ i);
+            cats.add(category);
+        }
+    }
 
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView textCatName;
+        ImageView imageViewCategory;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            imageViewCategory = (ImageView) itemView.findViewById(R.id.imageViewCategory);
+            textCatName = (TextView) itemView.findViewById(R.id.textCatName);
+        }
+    }
 }

@@ -6,15 +6,17 @@ import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketActivity extends AppCompatActivity {
+public class BasketActivity extends AppCompatActivity implements Serializable {
 
     private static final String TAG = BasketActivity.class.getSimpleName();
     String[] basketItems = {"Basket 1", "Basket 2", "Basket 3", "Basket 4", "Basket 5", "Basket 6"};
@@ -69,6 +71,21 @@ public class BasketActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(BasketActivity.this, SelectedItemActivity.class);
+                intent.putExtra("Name", itemList.get(i).getName());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        itemList = new ArrayList<Item>();
     }
 
 

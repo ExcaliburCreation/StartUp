@@ -11,10 +11,10 @@
     android:background="@android:color/background_light"
     tools:context="com.org.tijarah.structure.CategoriesActivity">
 
-    <ListView
-        android:id="@+id/categoriesList"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/catRecyclerView"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="2dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"/>
 </RelativeLayout>

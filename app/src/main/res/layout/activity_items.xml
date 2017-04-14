@@ -8,12 +8,10 @@
     android:paddingTop="20dp"
     tools:context="com.org.tijarah.structure.ItemsActivity">
 
-    <GridView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/itemsGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:numColumns="2"
         />
 
 </RelativeLayout>

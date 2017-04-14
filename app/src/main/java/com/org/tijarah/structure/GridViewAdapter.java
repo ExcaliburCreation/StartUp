@@ -144,8 +144,6 @@ public class GridViewAdapter extends BaseAdapter {
 
                     }
                 }
-
-
             }
         });
         return grid;
