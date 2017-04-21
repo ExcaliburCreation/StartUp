@@ -1,16 +1,19 @@
 package com.org.tijarah.structure;
 
 import android.content.Intent;
+import android.os.Parcelable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.SeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,11 @@ public class ItemsActivity extends AppCompatActivity {
     private static final String TAG = ItemsActivity.class.getSimpleName();
     List<Item> itemList;
 
+    RecyclerView recyclerViewItems;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    ItemsAdapter adapter;
+
     String[] items = {"Item 1", "Item 2", "Item 3", "Item 4"};
     Intent intent;
 
@@ -28,34 +36,45 @@ public class ItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        itemList = new ArrayList<Item>();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        intent = getIntent();
-
-        setTitle(intent.getStringExtra("Category"));
-
-        for(int i=0 ; i< 10 ; i++){
-
-            Item item = new Item("Item " + i, 10, 120.00, "category");
-            itemList.add(item);
-        }
-
-        Log.d(TAG,itemList.toString());
-        GridViewAdapter adapter = new GridViewAdapter(this, itemList);
-
-        GridView itemsGridView = (GridView) findViewById(R.id.itemsGridView);
-
-        itemsGridView.setAdapter(adapter);
-
-        itemsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ItemsActivity.this, SelectedItemActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        collapsingToolbarLayout.setTitle("Items");
+          itemList = new ArrayList<Item>();
+
+        intent = getIntent();
+
+        recyclerViewItems = (RecyclerView) findViewById(R.id.recyclerViewItems);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerViewItems.setHasFixedSize(true);
+
+        for (int i = 1; i <= 10; i++) {
+
+            Item item = new Item(i ,"Item " + i, 10, 120.00, "category");
+            itemList.add(item);
+        }
+
+        Session.setItems(itemList);
+      //  Session.basket.setItems(itemList);
+
+        adapter = new ItemsAdapter(itemList);
+
+        recyclerViewItems.setLayoutManager(layoutManager);
+        recyclerViewItems.setAdapter(adapter);
+
+        Log.d(TAG, itemList.toString());
 
 
     }
@@ -67,6 +86,7 @@ public class ItemsActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -77,4 +97,15 @@ public class ItemsActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        itemList = new ArrayList<Item>();
+        itemList.addAll(Session.getItems());
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "Restart" + itemList.toString());
+    }
+
+
 }

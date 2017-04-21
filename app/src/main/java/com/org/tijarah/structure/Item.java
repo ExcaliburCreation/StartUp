@@ -1,20 +1,24 @@
 package com.org.tijarah.structure;
 
+import java.io.Serializable;
+
 /**
  * Created by Excalibur Creations on 3/24/2017.
  */
 
-public class Item {
+public class Item implements Serializable {
 
+    private int id = 0;
     private String name;
     private String imageUrl;
     private int quantity;
     private double price;
-    private int count;
+    private int count = 0;
     private String category;
     private boolean isAdded;
 
-    public Item(){
+    public Item() {
+
         this.name = new String();
         this.imageUrl = new String();
         this.quantity = 0;
@@ -24,13 +28,32 @@ public class Item {
         this.isAdded = new Boolean(false);
     }
 
-    public Item(String name, int quantity, double price, String category){
+    public Item(int id, String name, int quantity, double price, String category) {
+        this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.category = category;
 
     }
+
+    public Item(String name, int quantity, double price, String category) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.count = 0;
+        this.category = category;
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -89,6 +112,6 @@ public class Item {
 
     @Override
     public String toString() {
-        return name +" : "+ price +" : "+ count;
+        return name + " : " + price + " : " + count;
     }
 }

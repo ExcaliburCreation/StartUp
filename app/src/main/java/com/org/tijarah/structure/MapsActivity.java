@@ -87,6 +87,8 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
         setContentView(R.layout.activity_location);
         getSupportActionBar().setTitle("Location");
 
+        Session session = new Session();
+
         editTextCity = (EditText) findViewById(R.id.editTextCity);
         editTextArea = (EditText) findViewById(R.id.editTextArea);
         btnContinue = (Button) findViewById(R.id.btnContinue);
@@ -220,77 +222,78 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.current_places_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_get_place) {
-            showNearPlaces();
-        }
-        return true;
-    }
 
     public void showNearPlaces() {
         if (mMap == null) {
             return;
         }
         if (mLocationPermissionGranted) {
+
+
             @SuppressWarnings("MissingPermission")
             PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
-            result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-                @Override
-                public void onResult(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
-                    int i = 0;
-                    mLikelyPlaceNames = new String[mMaxEntries];
-                    mLikelyPlaceAddresses = new String[mMaxEntries];
-                    mLikelyPlaceAttributions = new String[mMaxEntries];
-                    mLikelyPlaceLatLngs = new LatLng[mMaxEntries];
 
-                    String cityString = null;
-                    String areaString = null;
+                result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+                    @Override
+                    public void onResult(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
+                        int i = 0;
+                        mLikelyPlaceNames = new String[mMaxEntries];
+                        mLikelyPlaceAddresses = new String[mMaxEntries];
+                        mLikelyPlaceAttributions = new String[mMaxEntries];
+                        mLikelyPlaceLatLngs = new LatLng[mMaxEntries];
 
-                    for (PlaceLikelihood places : placeLikelihoods) {
+                        String cityString = null;
+                        String areaString = null;
 
-                        mLikelyPlaceNames[i] = (String) places.getPlace().getName();
-                        mLikelyPlaceAddresses[i] = (String) places.getPlace().getAddress();
-                        mLikelyPlaceAttributions[i] = (String) places.getPlace().getAttributions();
-                        mLikelyPlaceLatLngs[i] = places.getPlace().getLatLng();
+                        for (PlaceLikelihood places : placeLikelihoods) {
 
-                        cityString = (String) places.getPlace().getName();
-                        areaString = (String) places.getPlace().getAddress();
-                        Log.d("add", places.getPlace().getAddress().toString());
+                            mLikelyPlaceNames[i] = (String) places.getPlace().getName();
+                            mLikelyPlaceAddresses[i] = (String) places.getPlace().getAddress();
+                            mLikelyPlaceAttributions[i] = (String) places.getPlace().getAttributions();
+                            mLikelyPlaceLatLngs[i] = places.getPlace().getLatLng();
 
-                        i++;
-                        if (i > (mMaxEntries - 1)) {
-                            break;
+                            cityString = (String) places.getPlace().getName();
+                            areaString = (String) places.getPlace().getAddress();
+                            Log.d("add", places.getPlace().getAddress().toString());
+
+                            i++;
+                            if (i > (mMaxEntries - 1)) {
+                                break;
+                            }
                         }
+                        Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                        try {
+
+                            List<Address> addresses = geocoder.getFromLocation(mLikelyPlaceLatLngs[0].latitude, mLikelyPlaceLatLngs[0].longitude, 1);
+
+                            Log.d("geo", addresses.get(0).toString());
+
+                            editTextCity.setText(addresses.get(0).getAddressLine(1));
+                            editTextArea.setText(addresses.get(0).getAddressLine(0));
+
+                            btnContinue.setEnabled(true);
+                        } catch (Exception e) {
+                            Log.d(TAG, "Geocoder Error");
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MapsActivity.this);
+                            alertDialog.setMessage("There is some problem while getting your Location");
+                            alertDialog.setCancelable(false);
+
+                            alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    System.exit(0);
+                                }
+                            });
+                            alertDialog.show();
+                        }
+
+                        placeLikelihoods.release();
+
+
+                        //  openPlacesDialog();
                     }
-                    Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
-                    try {
+                });
 
-                        List<Address> addresses = geocoder.getFromLocation(mLikelyPlaceLatLngs[0].latitude, mLikelyPlaceLatLngs[0].longitude, 1);
-
-                        Log.d("geo", addresses.get(0).toString());
-
-                        editTextCity.setText(addresses.get(0).getAddressLine(1));
-                        editTextArea.setText(addresses.get(0).getAddressLine(0));
-
-                        btnContinue.setEnabled(true);
-                    } catch (IOException e) {
-                        Log.d(TAG, "Geocoder Error");
-                    }
-
-                    placeLikelihoods.release();
-
-
-                    //  openPlacesDialog();
-                }
-            });
         } else {
             mMap.addMarker(new MarkerOptions()
                     .title(getString(R.string.default_info_title))

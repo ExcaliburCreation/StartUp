@@ -56,12 +56,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnItemAdd"
+                    android:id="@+id/btnItemRemove"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="left"
                     android:text="-"
                     android:textSize="20sp" />
 
@@ -69,13 +71,15 @@
                     android:id="@+id/txtItemCount"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:gravity="center"
                     android:textAlignment="center"
                     android:hint="0" />
 
                 <Button
-                    android:id="@+id/btnItemRemove"
+                    android:id="@+id/btnItemAdd"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
                     android:text="+"
                     android:textSize="20sp" />
             </LinearLayout>

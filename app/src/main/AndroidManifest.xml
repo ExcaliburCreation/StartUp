@@ -45,6 +45,7 @@
             android:name=".BaseActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".ItemsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="Items"/>
         <activity android:name=".SelectedItemActivity"
             android:label="Item"/>
