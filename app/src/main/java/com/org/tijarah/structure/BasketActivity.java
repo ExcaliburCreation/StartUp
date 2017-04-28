@@ -27,7 +27,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
     Button btnFinalizeOrder;
     TextView txtBasketTotal;
     ArrayAdapter<String> adapter;
-    List<Item> itemList;
+    List<Item> itemList = new ArrayList<Item>();
     ListView listView;
 
     @Override
@@ -36,7 +36,6 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_basket);
 
         listView = (ListView) findViewById(R.id.basket_list);
-
         itemList = Session.basket.getItems();
 
         Log.d(TAG, itemList.toString());
@@ -44,13 +43,6 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         if (itemList != null) {
 
             basket = new String[itemList.size()];
-
-            for (int i = 0; i < itemList.size(); i++) {
-
-                basket[i] = itemList.get(i).getName();
-                total += itemList.get(i).getPrice() * itemList.get(i).getCount();
-                Log.d(TAG, String.valueOf(total));
-            }
 
             adapter = new ArrayAdapter<String>(this, R.layout.listview_item, basket);
             listView.setAdapter(adapter);
@@ -63,16 +55,16 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
 
 
         txtBasketTotal = (TextView) findViewById(R.id.txtBasketTotal);
-        txtBasketTotal.setText(String.valueOf(total));
+
 
         btnFinalizeOrder = (Button) findViewById(R.id.btnFinalizeOrder);
-      /*  btnFinalizeOrder.setOnClickListener(new View.OnClickListener() {
+        btnFinalizeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BasketActivity.this, SignInActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -83,7 +75,10 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
                 startActivity(intent);
             }
         });
+
+
     }
+
 
     @Override
     protected void onRestart() {
@@ -92,33 +87,45 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         Log.d(TAG, "On restart");
         itemList = Session.basket.getItems();
         adapter.notifyDataSetChanged();
+        Log.d(TAG, itemList.toString());
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         Log.d(TAG, "On Resume");
-        itemList.clear();
         itemList = Session.basket.getItems();
+        updateData();
         adapter.notifyDataSetChanged();
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
-        return true;
+        Log.d(TAG, itemList.toString());
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if (item.getItemId() == R.id.basket) {
-            Intent intent = new Intent(getBaseContext(), BasketActivity.class);
-            startActivity(intent);
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+
+                adapter.notifyDataSetChanged();
+            }
+            if(resultCode == RESULT_CANCELED){
+
+            }
         }
+    }
 
-        return true;
+    public void updateData(){
+        total = 0;
+        for (int i = 0; i < itemList.size(); i++) {
+
+            basket[i] = itemList.get(i).getName();
+            total += itemList.get(i).getPrice() * itemList.get(i).getCount();
+            Log.d(TAG, String.valueOf(total));
+            txtBasketTotal.setText(String.valueOf(total));
+
+        }
     }
 }

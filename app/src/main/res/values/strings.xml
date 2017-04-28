@@ -32,7 +32,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Dialogs-->
-    <string name="splash_dialog_message">Internet Connection or Location is turned off! </string>
+    <string name="splash_dialog_message">Internet Connection or Location not enabled.</string>
     <string name="splash_dialog_title"></string>
     <string name="splash_dialog_button_negative">OK</string>
     <string name="splash_dialog_button_postive">Allow</string>

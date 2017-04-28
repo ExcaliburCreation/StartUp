@@ -22,13 +22,13 @@ public class Basket {
     }
 
     public Item getItem(Item item) {
-        if(items.contains(item)){
-            for(Item i : items){
-                if(i.getName().equals(item.getName())){
+        if (items.contains(item)) {
+            for (Item i : items) {
+                if (i.getName().equals(item.getName())) {
                     return item;
                 }
             }
-        }else{
+        } else {
             return null;
         }
 
@@ -36,18 +36,29 @@ public class Basket {
     }
 
     public void addItems(Item item) {
-        items.add(item);
+        if (items.contains(item)) {
+            for (int i = 0; i < items.size(); i++) {
+                Item temp = items.get(i);
+                if (temp.getName().equals(item.getName())) {
+                    int count = temp.getCount();
+                    temp.setCount(count);
+                }
+            }
+        } else {
+            items.add(item);
+        }
+
     }
 
     public Item removeItem(Item item) {
-        if(items.contains(item)){
-            for(int i=0 ; i< items.size(); i++){
+        if (items.contains(item)) {
+            for (int i = 0; i < items.size(); i++) {
                 Item temp = items.get(i);
-                if(temp.getName().equals(item.getName())){
+                if (temp.getName().equals(item.getName())) {
                     items.remove(i);
                 }
             }
-        }else{
+        } else {
             return null;
         }
         return item;

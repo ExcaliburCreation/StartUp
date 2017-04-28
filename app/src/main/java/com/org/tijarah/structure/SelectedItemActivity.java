@@ -39,7 +39,6 @@ public class SelectedItemActivity extends AppCompatActivity {
         intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        Log.d(TAG, Session.getItems().toString());
 
         btnAddToBasket = (Button) findViewById(R.id.btnAddToBasket);
         btnItemAdd = (Button) findViewById(R.id.btnItemAdd);
@@ -51,21 +50,27 @@ public class SelectedItemActivity extends AppCompatActivity {
 
         imgSelectedItem = (ImageView) findViewById(R.id.imgSelectedItem);
 
-        final int id = bundle.getInt("item");
+        final int id = intent.getIntExtra("item", 1);
         final Item item = Session.items.get(id);
 
-        Log.d(TAG + "Serialized", Session.items.toString());
+        //    Log.d(TAG + "Serialized", Session.items.toString());
+        if (item.getCount() == 0) {
+            btnAddToBasket.setEnabled(false);
 
+        }else {
+            btnAddToBasket.setEnabled(true);
+        }
         txtSelectedItemName.setText(item.getName());
         txtItemCount.setText(String.valueOf(item.getCount()));
-        Log.d(TAG, item.toString());
-
+        //      Log.d(TAG, item.toString());
+        btnAddToBasket.setEnabled(false);
         setTitle(item.getName());
 
         btnAddToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedItemActivity.this, BasketActivity.class);
+                Session.basket.addItems(item);
                 startActivity(intent);
             }
         });
@@ -86,7 +91,13 @@ public class SelectedItemActivity extends AppCompatActivity {
                     Session.items.get(id).setAdded(true);
 
                 } else {
-                    Session.basket.getItem(item).setCount(count);
+                    // Session.basket.getItem(item).setCount(count);
+                }
+                if (item.getCount() > 0) {
+                    btnAddToBasket.setEnabled(true);
+
+                }else {
+                    btnAddToBasket.setEnabled(false);
                 }
             }
         });
@@ -99,24 +110,51 @@ public class SelectedItemActivity extends AppCompatActivity {
 
                 if (count == 0) {
 
-                    Session.items.get(id).setAdded(true);
+                    Session.items.get(id).setAdded(false);
 
                     Session.basket.removeItem(item);
-                    Session.basket.getItem(item).setAdded(true);
+//                    Session.basket.getItem(item).setAdded(false);
                 } else {
 
                     txtItemCount.setText(String.valueOf(--count));
                     Session.items.get(id).setCount(count);
 
-                    if (!Session.items.get(id).isAdded()) {
-                        Session.items.get(id).setAdded(true);
-                        Session.basket.getItem(item).setCount(count);
+                    if (count == 0) {
+                        Session.basket.removeItem(item);
+                        Session.items.get(id).setAdded(false);
                     }
+
+
+                }
+
+                if (item.getCount() <= 0) {
+                    btnAddToBasket.setEnabled(false);
 
                 }
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        Intent intent = new Intent();
+        setResult(RESULT_OK,intent );
+        finish();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.d(TAG, "On Restart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d(TAG, "On Resume");
+    }
 }

@@ -46,8 +46,6 @@ public class CategoriesActivity extends AppCompatActivity {
 
     List<Category> cats = new ArrayList<Category>();
 
-    Category category = new Category();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 dbr.child("Categories").getRef()) {
 
             @Override
-            protected void populateViewHolder(ViewHolder viewHolder, Category model, int position) {
+            protected void populateViewHolder(ViewHolder viewHolder, final Category model, int position) {
 
                 viewHolder.textCatName.setText(model.getName());
                 Log.d(TAG, "Recycler View :" + model.getName());
@@ -83,6 +81,7 @@ public class CategoriesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(CategoriesActivity.this, ItemsActivity.class);
+                        intent.putExtra("item", model.getName());
                         startActivity(intent);
                         Toast.makeText(CategoriesActivity.this, "Category clicked", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Category clicked");
@@ -150,6 +149,12 @@ public class CategoriesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Log.d(TAG, "On Resume");
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "On Restart");
     }
 }

@@ -81,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
     private EditText editTextArea;
     private Button btnContinue;
 
+    List<Item> itemList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +89,8 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
         getSupportActionBar().setTitle("Location");
 
         Session session = new Session();
+        itemList = new ArrayList<Item>();
+
 
         editTextCity = (EditText) findViewById(R.id.editTextCity);
         editTextArea = (EditText) findViewById(R.id.editTextArea);
@@ -102,6 +105,15 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
         mGoogleApiClient.connect();
+
+        for (int i = 1; i <= 10; i++) {
+
+            Item item = new Item(i, "Item " + i, 10, 120.00, "category");
+            itemList.add(item);
+        }
+
+        Session.setItems(itemList);
+        Log.d(TAG, itemList.toString());
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override

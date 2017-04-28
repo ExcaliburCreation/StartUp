@@ -22,6 +22,9 @@ import android.view.View;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -29,7 +32,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 public class SplashScreen extends AppCompatActivity {
 
     private static final String TAG = SplashScreen.class.getSimpleName();
-
+    List<Item> itemList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +43,25 @@ public class SplashScreen extends AppCompatActivity {
 
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
+                WifiManager manager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setMessage(R.string.splash_dialog_message);
-
-                dialog.setNegativeButton(R.string.splash_dialog_button_negative, new DialogInterface.OnClickListener() {
+                dialog.setCancelable(false);
+                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialog, int which) {
                         System.exit(1);
                     }
                 });
+              /*  dialog.setNegativeButton(R.string.splash_dialog_button_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       // System.exit(1);
+
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS ));
+                    }
+                });*/
             /*    dialog.setPositiveButton(R.string.splash_dialog_button_postive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

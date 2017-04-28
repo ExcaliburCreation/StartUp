@@ -1,6 +1,7 @@
 package com.org.tijarah.structure;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,7 +14,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +37,11 @@ public class ItemsActivity extends AppCompatActivity {
 
     ItemsAdapter adapter;
 
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    FirebaseRecyclerAdapter<Item, ItemHolder> firebaseRecyclerAdapter;
+
+
     String[] items = {"Item 1", "Item 2", "Item 3", "Item 4"};
     Intent intent;
 
@@ -39,6 +53,8 @@ public class ItemsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        firebaseDatabase = firebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -49,30 +65,50 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
+        String items = getIntent().getStringExtra("item");
+        Log.d(TAG, items);
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Item, ItemHolder>(
+                Item.class,
+                R.layout.item_grid,
+                ItemHolder.class,
+                databaseReference.child("Categories").child("Items").getRef()) {
+            @Override
+            protected void populateViewHolder(ItemHolder viewHolder, Item model, int position) {
 
+                viewHolder.textViewItemName.setText(model.getName());
+                Log.d(TAG, model.getName());
+                if (model.getCount() > 0) {
+                    viewHolder.itemImage.setVisibility(View.GONE);
+                    viewHolder.textViewCount.setVisibility(View.VISIBLE);
+                    viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
+                    viewHolder.textViewCount.setText(String.valueOf(model.getCount()));
+                }
+
+
+
+
+            }
+        };
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setTitle("Items");
-          itemList = new ArrayList<Item>();
+        itemList = new ArrayList<Item>();
 
-        intent = getIntent();
+
+        itemList = Session.items;
+        //  intent = getIntent();
+        Log.d(TAG, Session.getItems().toString());
 
         recyclerViewItems = (RecyclerView) findViewById(R.id.recyclerViewItems);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerViewItems.setHasFixedSize(true);
 
-        for (int i = 1; i <= 10; i++) {
 
-            Item item = new Item(i ,"Item " + i, 10, 120.00, "category");
-            itemList.add(item);
-        }
+        //  Session.basket.setItems(itemList);
 
-        Session.setItems(itemList);
-      //  Session.basket.setItems(itemList);
-
-        adapter = new ItemsAdapter(itemList);
+        adapter = new ItemsAdapter(Session.items);
 
         recyclerViewItems.setLayoutManager(layoutManager);
-        recyclerViewItems.setAdapter(adapter);
+        recyclerViewItems.setAdapter(firebaseRecyclerAdapter);
 
         Log.d(TAG, itemList.toString());
 
@@ -107,5 +143,35 @@ public class ItemsActivity extends AppCompatActivity {
         Log.d(TAG, "Restart" + itemList.toString());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        itemList = new ArrayList<Item>();
+        itemList.addAll(Session.getItems());
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "Resume" + itemList.toString());
+
+    }
+
+    public static class ItemHolder extends RecyclerView.ViewHolder {
+
+        ImageView itemImage;
+        Button btnAdd;
+        Button btnRemove;
+        TextView textViewItemName;
+        TextView textViewCount;
+
+        public ItemHolder(View itemView) {
+            super(itemView);
+
+            itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
+            btnAdd = (Button) itemView.findViewById(R.id.btnAdd);
+            btnRemove = (Button) itemView.findViewById(R.id.btnRemove);
+            textViewItemName = (TextView) itemView.findViewById(R.id.textViewItemName);
+            textViewCount = (TextView) itemView.findViewById(R.id.textViewCount);
+        }
+
+
+    }
 }
