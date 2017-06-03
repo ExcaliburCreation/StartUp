@@ -63,13 +63,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 count++;
                 holder.textViewCount.setText(String.valueOf(count));
                 if (Session.basket.getItems().contains(item)) {
-                    Session.basket.getItem(item).setCount(count);
-                    Session.getItem(item).setCount(count);
+                    Session.basket.getItem(item).setCount(String.valueOf(count));
+                    Session.getItem(item).setCount(String.valueOf(count));
                 } else {
                     Session.basket.addItems(item);
-                    Session.basket.getItem(item).setCount(count);
+                    Session.basket.getItem(item).setCount(String.valueOf(count));
 
-                    Session.getItem(item).setCount(count);
+                    Session.getItem(item).setCount(String.valueOf(count));
                 }
 
                 item.setAdded(true);
@@ -93,7 +93,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                     int count = item.getCount();
                     count--;
                     holder.textViewCount.setText(String.valueOf(count));
-                    item.setCount(count);
+                    item.setCount(String.valueOf(count));
 
                     if (count == 0) {
 
@@ -105,8 +105,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                             if (item.getCount() == 0) {
                                 Session.basket.removeItem(item);
                             } else {
-                                Session.basket.getItem(item).setCount(count);
-                                Session.getItem(item).setCount(count);
+                                Session.basket.getItem(item).setCount(String.valueOf(count));
+                                Session.getItem(item).setCount(String.valueOf(count));
 
                             }
                         }

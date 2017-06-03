@@ -8,42 +8,44 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
-    private int id = 0;
-    private String name;
+    private String Unit;
+    private String Price;
+    private String Name;
+    private String Description;
     private String imageUrl;
-    private int quantity;
-    private double price;
-    private int count = 0;
+    private String quantity;
+    private String count;
     private String category;
-    private boolean isAdded;
+    private String isAdded;
+    private int id;
 
     public Item() {
 
-        this.name = new String();
+        this.Name = new String();
         this.imageUrl = new String();
-        this.quantity = 0;
-        this.price = 0;
-        this.count = 0;
+        this.quantity = new String();
+        this.Price = new String();
+        this.count = new String("0");
         this.category = new String();
-        this.isAdded = new Boolean(false);
+        this.isAdded = new String();
     }
 
     public Item(int id, String name, int quantity, double price, String category) {
         this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
+        this.Name = name;
+        this.quantity = String.valueOf(quantity);
+        this.Price = String.valueOf(price);
+        this.count = new String("0");
         this.category = category;
 
     }
 
-    public Item(String name, int quantity, double price, String category) {
-        this.name = name;
+    public Item(String name, String quantity, String price, String category) {
+        this.Name = name;
         this.quantity = quantity;
-        this.price = price;
-        this.count = 0;
+        this.Price = price;
         this.category = category;
-
+        this.count = new String("0");
     }
 
     public int getId() {
@@ -54,12 +56,44 @@ public class Item implements Serializable {
         this.id = id;
     }
 
+ /*   public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }*/
+
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
+    }
+
+    public String getUnit() {
+        return Unit;
+    }
+
+    public void setUnit(String unit) {
+        Unit = unit;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public String getIsAdded() {
+        return isAdded;
+    }
+
+    public void setIsAdded(String isAdded) {
+        this.isAdded = isAdded;
     }
 
     public String getImageUrl() {
@@ -71,27 +105,27 @@ public class Item implements Serializable {
     }
 
     public int getQuantity() {
-        return quantity;
+        return Integer.parseInt(quantity);
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
     public int getCount() {
-        return count;
+        return Integer.parseInt(count);
     }
 
-    public void setCount(int count) {
+    public void setCount(String count) {
         this.count = count;
     }
 
     public double getPrice() {
-        return price;
+        return Double.parseDouble(Price);
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(String price) {
+        this.Price = price;
     }
 
     public String getCategory() {
@@ -103,15 +137,33 @@ public class Item implements Serializable {
     }
 
     public boolean isAdded() {
-        return isAdded;
+
+        if (this.isAdded.equals("")) {
+            return false;
+        }
+        return true;
     }
 
     public void setAdded(boolean added) {
-        isAdded = added;
+        if (this.isAdded.equals("")) {
+            isAdded = "";
+        }
+        isAdded = "true";
     }
+
 
     @Override
     public String toString() {
-        return name + " : " + price + " : " + count;
+        return "Item{" +
+                ", name='" + Name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + Price +
+                ", count=" + count +
+                ", category='" + category + '\'' +
+                ", isAdded=" + isAdded +
+                '}';
     }
+
+
 }

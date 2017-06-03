@@ -38,8 +38,10 @@ public class CategoriesActivity extends AppCompatActivity {
     private FirebaseDatabase fbdb;
     private DatabaseReference dbr;
     private FirebaseRecyclerAdapter<Category, ViewHolder> adapter;
+    private ChildEventListener cel;
 //    private static ClickListener clickListener;
 
+    Category catsz = new Category();
 
     private RecyclerView catRecyclerView;
     private CategoryAdapter mycategoryAdapter;
@@ -56,6 +58,7 @@ public class CategoriesActivity extends AppCompatActivity {
         fbdb = fbdb.getInstance();
         dbr = fbdb.getReference();
 
+
         catRecyclerView = (RecyclerView) findViewById(R.id.catRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -71,19 +74,29 @@ public class CategoriesActivity extends AppCompatActivity {
                 dbr.child("Categories").getRef()) {
 
             @Override
-            protected void populateViewHolder(ViewHolder viewHolder, final Category model, int position) {
+            protected void populateViewHolder(ViewHolder viewHolder, final Category model, final int position) {
+
+//                catsz = dataSnapshot.getValue(Category.class);
+//                catsz.setKey(dataSnapshot.getKey());
+//                catRecyclerView.getAdapter(catsz);
+
+
+//                model.setKey(dbr.getKey());
+                //  catRecyclerView.setAdapter(adapter);
 
                 viewHolder.textCatName.setText(model.getName());
                 Log.d(TAG, "Recycler View :" + model.getName());
+
 
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(CategoriesActivity.this, ItemsActivity.class);
-                        intent.putExtra("item", model.getName());
+                        intent.putExtra("Category", model.getName());
+                        intent.putExtra("position", model.getId());
                         startActivity(intent);
-                        Toast.makeText(CategoriesActivity.this, "Category clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CategoriesActivity.this, "Category clicked" + model.getId(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Category clicked");
                     }
                 });
@@ -95,14 +108,14 @@ public class CategoriesActivity extends AppCompatActivity {
         catRecyclerView.setLayoutManager(layoutManager);
         catRecyclerView.setAdapter(adapter);
 
-
     }
 
 
     private void generateData() {
 
         for (int i = 0; i < 10; i++) {
-            Category category = new Category("Category " + i);
+
+            Category category = new Category();
             cats.add(category);
         }
     }

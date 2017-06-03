@@ -7,13 +7,14 @@ package com.org.tijarah.structure;
 public class Category {
 
     private String Name;
+    private String id;
 
     public Category(){}
 
-    public Category (String Name)
+    public Category (String Name,String id)
     {
         this.Name = Name;
-
+        this.id = id;
     }
 
     public String getName() {
@@ -22,5 +23,13 @@ public class Category {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

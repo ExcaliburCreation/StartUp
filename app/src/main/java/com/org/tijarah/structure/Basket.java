@@ -41,7 +41,7 @@ public class Basket {
                 Item temp = items.get(i);
                 if (temp.getName().equals(item.getName())) {
                     int count = temp.getCount();
-                    temp.setCount(count);
+                    temp.setCount(String.valueOf(count));
                 }
             }
         } else {

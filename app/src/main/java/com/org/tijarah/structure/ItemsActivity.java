@@ -3,6 +3,7 @@ package com.org.tijarah.structure;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +55,8 @@ public class ItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
 
+        final List<Item> keys = new ArrayList<Item>();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,30 +72,70 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
-        String items = getIntent().getStringExtra("item");
-        Log.d(TAG, items);
+
+        final String items = getIntent().getStringExtra("Category");
+        String catPosition = getIntent().getStringExtra("position");
+        //  Log.d(TAG + "intent", items);
+
+
+        databaseReference.child("Categories").child(catPosition).child("Items").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> data = dataSnapshot.getChildren();
+
+                for (DataSnapshot i : data) {
+
+                    Item item = i.getValue(Item.class);
+
+                    Log.d(TAG + "RET", i.getValue().toString());
+                    Log.d(TAG + "RETI", item.toString());
+                    keys.add(item);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        Log.d(TAG + "keys", keys.toString());
+
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Item, ItemHolder>(
                 Item.class,
                 R.layout.item_grid,
                 ItemHolder.class,
-                databaseReference.child("Categories").child("Items").getRef()) {
+                databaseReference.child("Categories").child(catPosition).child("Items").getRef()) {
             @Override
-            protected void populateViewHolder(ItemHolder viewHolder, Item model, int position) {
+            protected void populateViewHolder(ItemHolder viewHolder, final Item model, int position) {
 
                 viewHolder.textViewItemName.setText(model.getName());
-                Log.d(TAG, model.getName());
-                if (model.getCount() > 0) {
+                viewHolder.textViewItemPrice.setText("Rs: "+String.valueOf(model.getPrice()  ));
+
+                Log.d(TAG + "model", model.toString());
+             /* if (model.getCount() > 0) {
                     viewHolder.itemImage.setVisibility(View.GONE);
                     viewHolder.textViewCount.setVisibility(View.VISIBLE);
                     viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
                     viewHolder.textViewCount.setText(String.valueOf(model.getCount()));
-                }
+                }*/
 
-
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ItemsActivity.this, SelectedItemActivity.class);
+                        intent.putExtra("0", model);
+                        startActivity(intent);
+                    }
+                });
 
 
             }
         };
+
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setTitle("Items");
         itemList = new ArrayList<Item>();
@@ -156,20 +203,24 @@ public class ItemsActivity extends AppCompatActivity {
 
     public static class ItemHolder extends RecyclerView.ViewHolder {
 
+        View mView;
         ImageView itemImage;
         Button btnAdd;
         Button btnRemove;
         TextView textViewItemName;
         TextView textViewCount;
+        TextView textViewItemPrice;
 
         public ItemHolder(View itemView) {
             super(itemView);
 
+            mView = itemView;
             itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
             btnAdd = (Button) itemView.findViewById(R.id.btnAdd);
             btnRemove = (Button) itemView.findViewById(R.id.btnRemove);
             textViewItemName = (TextView) itemView.findViewById(R.id.textViewItemName);
             textViewCount = (TextView) itemView.findViewById(R.id.textViewCount);
+            textViewItemPrice = (TextView) itemView.findViewById(R.id.textViewItemPrice);
         }
 
 
