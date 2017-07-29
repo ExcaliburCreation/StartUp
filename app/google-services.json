@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "722101621295",
+    "firebase_url": "https://startup-164c6.firebaseio.com",
+    "project_id": "startup-164c6",
+    "storage_bucket": "startup-164c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722101621295:android:be72ba9491458f61",
+        "android_client_info": {
+          "package_name": "com.org.tijarah.structure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722101621295-fakakci6bq8gm8vfjgs1tm589l0uo3jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfDWh0UNoYvc2ouj8OpiWh-jT_0KxBZho"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

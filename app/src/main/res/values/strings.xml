@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TIJARAH</string>
 
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_main_activity">Main</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="selected_item_name">Selected Item</string>
@@ -21,4 +21,26 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_maps">Map</string>
+    <string name="option_get_place">Near Places</string>
+    <string name="default_info_title">Info Title</string>
+    <string name="default_info_snippet">Snippet</string>
+    <string name="pick_place">Dialog Title</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Dialogs-->
+    <string name="splash_dialog_message">Internet Connection or Location not enabled.</string>
+    <string name="splash_dialog_title"></string>
+    <string name="splash_dialog_button_negative">OK</string>
+    <string name="splash_dialog_button_postive">Allow</string>
+
+    <string name="action_basket">Basket</string>
+    <string name="title_activity_location">LocationActivity</string>
+
+
+    <!--Buttons-->
+    <string name="btn_continue_text">Continue</string>
 </resources>
