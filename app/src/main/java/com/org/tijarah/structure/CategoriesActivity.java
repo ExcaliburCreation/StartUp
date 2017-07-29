@@ -41,12 +41,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private ChildEventListener cel;
 //    private static ClickListener clickListener;
 
-    Category catsz = new Category();
-
     private RecyclerView catRecyclerView;
-    private CategoryAdapter mycategoryAdapter;
-
-    List<Category> cats = new ArrayList<Category>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +58,6 @@ public class CategoriesActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
         catRecyclerView.setHasFixedSize(true);
-        //   generateData();
-
-        //  mycategoryAdapter = new CategoryAdapter(cats);
 
         adapter = new FirebaseRecyclerAdapter<Category, ViewHolder>(
                 Category.class,
@@ -75,14 +67,6 @@ public class CategoriesActivity extends AppCompatActivity {
 
             @Override
             protected void populateViewHolder(ViewHolder viewHolder, final Category model, final int position) {
-
-//                catsz = dataSnapshot.getValue(Category.class);
-//                catsz.setKey(dataSnapshot.getKey());
-//                catRecyclerView.getAdapter(catsz);
-
-
-//                model.setKey(dbr.getKey());
-                //  catRecyclerView.setAdapter(adapter);
 
                 viewHolder.textCatName.setText(model.getName());
                 Log.d(TAG, "Recycler View :" + model.getName());
@@ -109,17 +93,6 @@ public class CategoriesActivity extends AppCompatActivity {
         catRecyclerView.setAdapter(adapter);
 
     }
-
-
-    private void generateData() {
-
-        for (int i = 0; i < 10; i++) {
-
-            Category category = new Category();
-            cats.add(category);
-        }
-    }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

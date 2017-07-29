@@ -2,9 +2,6 @@ package com.org.tijarah.structure;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,16 +42,12 @@ public class ItemsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     FirebaseRecyclerAdapter<Item, ItemHolder> firebaseRecyclerAdapter;
 
-
-    String[] items = {"Item 1", "Item 2", "Item 3", "Item 4"};
     Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
-
-        final List<Item> keys = new ArrayList<Item>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,13 +64,9 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
-
-        final String items = getIntent().getStringExtra("Category");
         String catPosition = getIntent().getStringExtra("position");
-        //  Log.d(TAG + "intent", items);
 
-
-        databaseReference.child("Categories").child(catPosition).child("Items").addValueEventListener(new ValueEventListener() {
+       /* databaseReference.child("Categories").child(catPosition).child("Items").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -102,7 +90,9 @@ public class ItemsActivity extends AppCompatActivity {
 
         });
 
-        Log.d(TAG + "keys", keys.toString());
+*/
+
+        itemList = new ArrayList<Item>();
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Item, ItemHolder>(
                 Item.class,
@@ -110,12 +100,82 @@ public class ItemsActivity extends AppCompatActivity {
                 ItemHolder.class,
                 databaseReference.child("Categories").child(catPosition).child("Items").getRef()) {
             @Override
-            protected void populateViewHolder(ItemHolder viewHolder, final Item model, int position) {
+            protected void populateViewHolder(final ItemHolder viewHolder, final Item model, int position) {
+                Item item = model;
+                itemList.add(item);
 
+                Session.setItems(itemList);
+                Session.basket.setItems(itemList);
+
+           //     final Item item = Session.items.get(position);
                 viewHolder.textViewItemName.setText(model.getName());
                 viewHolder.textViewItemPrice.setText("Rs: "+String.valueOf(model.getPrice()  ));
 
+                viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(ItemsActivity.this, "Added", Toast.LENGTH_SHORT).show();
+
+                        int count = model.getCount();
+
+                        viewHolder.itemImage.setVisibility(View.GONE);
+                        viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
+                        viewHolder.textViewCount.setVisibility(View.VISIBLE);
+
+                        count++;
+                        viewHolder.textViewCount.setText(String.valueOf(count));
+                        if (Session.basket.getItems().contains(model)) {
+                            Session.basket.getItem(model).setCount(String.valueOf(count));
+                            Session.getItem(model).setCount(String.valueOf(count));
+                        } else {
+                            Session.basket.addItems(model);
+                            Session.basket.getItem(model).setCount(String.valueOf(count));
+                            Session.getItem(model).setCount(String.valueOf(count));
+                        }
+                        model.setAdded(true);
+                    }
+                });
+                
+                viewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(ItemsActivity.this, "Remove", Toast.LENGTH_SHORT).show();
+
+                        if (model.getCount() == 0) {
+                            viewHolder.itemImage.setVisibility(View.VISIBLE);
+                            viewHolder.itemImage.setBackgroundColor(Color.DKGRAY);
+                            viewHolder.textViewCount.setVisibility(View.GONE);
+                            Session.basket.removeItem(model);
+
+                        } else if (model.getCount() > 0) {
+
+                            int count = model.getCount();
+                            count--;
+                            viewHolder.textViewCount.setText(String.valueOf(count));
+                            model.setCount(String.valueOf(count));
+
+                            if (count == 0) {
+
+                                viewHolder.itemImage.setVisibility(View.VISIBLE);
+                                viewHolder.itemImage.setBackgroundColor(Color.DKGRAY);
+                                viewHolder.textViewCount.setVisibility(View.GONE);
+
+                                if (Session.basket.getItems().contains(model)) {
+                                    if (model.getCount() == 0) {
+                                        Session.basket.removeItem(model);
+                                    } else {
+                                        Session.basket.getItem(model).setCount(String.valueOf(count));
+                                        Session.getItem(model).setCount(String.valueOf(count));
+
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                });
                 Log.d(TAG + "model", model.toString());
+                Log.d(TAG + "Abc", Session.getItems().toString());
              /* if (model.getCount() > 0) {
                     viewHolder.itemImage.setVisibility(View.GONE);
                     viewHolder.textViewCount.setVisibility(View.VISIBLE);
@@ -127,7 +187,7 @@ public class ItemsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(ItemsActivity.this, SelectedItemActivity.class);
-                        intent.putExtra("0", model);
+                        intent.putExtra("itemsActivity", model);
                         startActivity(intent);
                     }
                 });
@@ -138,12 +198,9 @@ public class ItemsActivity extends AppCompatActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         collapsingToolbarLayout.setTitle("Items");
-        itemList = new ArrayList<Item>();
 
-
-        itemList = Session.items;
         //  intent = getIntent();
-        Log.d(TAG, Session.getItems().toString());
+//        Log.d(TAG, Session.getItems().toString());
 
         recyclerViewItems = (RecyclerView) findViewById(R.id.recyclerViewItems);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -157,7 +214,7 @@ public class ItemsActivity extends AppCompatActivity {
         recyclerViewItems.setLayoutManager(layoutManager);
         recyclerViewItems.setAdapter(firebaseRecyclerAdapter);
 
-        Log.d(TAG, itemList.toString());
+//        Log.d(TAG, itemList.toString());
 
 
     }
@@ -184,20 +241,12 @@ public class ItemsActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        itemList = new ArrayList<Item>();
-        itemList.addAll(Session.getItems());
-        adapter.notifyDataSetChanged();
-        Log.d(TAG, "Restart" + itemList.toString());
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        itemList = new ArrayList<Item>();
-        itemList.addAll(Session.getItems());
-        adapter.notifyDataSetChanged();
-        Log.d(TAG, "Resume" + itemList.toString());
 
     }
 

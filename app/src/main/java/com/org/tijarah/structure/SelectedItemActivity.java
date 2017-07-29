@@ -51,19 +51,16 @@ public class SelectedItemActivity extends AppCompatActivity {
         imgSelectedItem = (ImageView) findViewById(R.id.imgSelectedItem);
 
 
-        //  final int id = intent.getIntExtra("item", 1);
+        final int id = intent.getIntExtra("item", 1);
 
-        final Item item = (Item) intent.getSerializableExtra("0");
+        final Item item = (Item) getIntent().getSerializableExtra("itemsActivity");
 
+     //   Log.d("Null object", item.toString());
 
-
-        //final Item item = Session.items.get(id);
-
-        //    Log.d(TAG + "Serialized", Session.items.toString());
         if (item.getCount() == 0) {
             btnAddToBasket.setEnabled(false);
 
-        }else {
+        } else {
             btnAddToBasket.setEnabled(true);
         }
         txtSelectedItemName.setText(item.getName());
@@ -84,34 +81,34 @@ public class SelectedItemActivity extends AppCompatActivity {
         btnItemAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            /*    Toast.makeText(SelectedItemActivity.this, "Add", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectedItemActivity.this, "Add", Toast.LENGTH_LONG).show();
                 int count = item.getCount();
 
-                 txtItemCount.setText(String.valueOf(++count));
+                txtItemCount.setText(String.valueOf(++count));
                 Session.items.get(id).setCount(String.valueOf(count));
 
                 if (!item.isAdded()) {
                     Session.basket.addItems(item);
                     Session.basket.getItem(item).setCount(String.valueOf(count));
                     Session.basket.getItem(item).setAdded(true);
-                    Session.items.get(id).setAdded(true);
+//                    Session.items.get(id).setAdded(true);
 
                 } else {
-                    // Session.basket.getItem(item).setCount(count);
+                     Session.basket.getItem(item).setCount(String.valueOf(count));
                 }
                 if (item.getCount() > 0) {
                     btnAddToBasket.setEnabled(true);
 
-                }else {
+                } else {
                     btnAddToBasket.setEnabled(false);
-                }*/
+                }
             }
         });
 
         btnItemRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Toast.makeText(SelectedItemActivity.this, "Remove", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectedItemActivity.this, "Remove", Toast.LENGTH_LONG).show();
                 int count = item.getCount();
 
                 if (count == 0) {
@@ -136,7 +133,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                 if (item.getCount() <= 0) {
                     btnAddToBasket.setEnabled(false);
 
-                }*/
+                }
 
 
             }

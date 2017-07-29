@@ -17,6 +17,7 @@ public class Item implements Serializable {
     private String count;
     private String category;
     private String isAdded;
+   // private String id;
     private int id;
 
     public Item() {
@@ -46,6 +47,14 @@ public class Item implements Serializable {
         this.Price = price;
         this.category = category;
         this.count = new String("0");
+    }
+
+    public Item(Item item){
+        this.Name = item.getName();
+        this.quantity = String.valueOf(item.getQuantity());
+        this.Price = String.valueOf(item.getPrice());
+        this.category = item.getCategory();
+        this.count = String.valueOf(item.getCount());
     }
 
     public int getId() {
@@ -155,7 +164,8 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "Item{" +
-                ", name='" + Name + '\'' +
+                ", id='" + id + '\'' +
+                ", Name='" + Name + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + Price +

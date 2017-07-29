@@ -3,10 +3,7 @@ package com.org.tijarah.structure;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,8 +33,10 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_basket);
 
         listView = (ListView) findViewById(R.id.basket_list);
-        itemList = Session.basket.getItems();
 
+        if (Session.basket.getItems() != null) {
+            itemList = Session.basket.getItems();
+        }
         Log.d(TAG, itemList.toString());
 
         if (itemList != null) {
@@ -70,7 +69,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(BasketActivity.this, SelectedItemActivity.class);
-                intent.putExtra("item", itemList.get(i).getId() - 1);
+                intent.putExtra("itemsActivity", itemList.get(i));
                 Log.d(TAG, Session.getItems().toString());
                 startActivity(intent);
             }
@@ -106,18 +105,18 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1){
-            if(resultCode == RESULT_OK){
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
 
                 adapter.notifyDataSetChanged();
             }
-            if(resultCode == RESULT_CANCELED){
+            if (resultCode == RESULT_CANCELED) {
 
             }
         }
     }
 
-    public void updateData(){
+    public void updateData() {
         total = 0;
         for (int i = 0; i < itemList.size(); i++) {
 
