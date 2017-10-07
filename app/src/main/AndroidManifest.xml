@@ -36,8 +36,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main_activity" />
         <activity
-            android:name=".MapActivity"
-            android:theme="@style/AlertDialog.AppCompat" />
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SelectStoreActivity" />
         <activity android:name=".CategoriesActivity"
             android:label="Category" />

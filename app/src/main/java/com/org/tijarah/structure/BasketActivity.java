@@ -34,22 +34,25 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
 
         listView = (ListView) findViewById(R.id.basket_list);
 
-        if (Session.basket.getItems() != null) {
-            itemList = Session.basket.getItems();
+        if (Session.getItems() != null) {
+            itemList = loadData();
         }
         Log.d(TAG, itemList.toString());
-
+        List<String> items = new ArrayList<String>();
         if (itemList != null) {
 
-            basket = new String[itemList.size()];
 
-            adapter = new ArrayAdapter<String>(this, R.layout.listview_item, basket);
+
+            for(Item i : itemList){
+                items.add(i.getName());
+            }
+
+
+            adapter = new ArrayAdapter<String>(this, R.layout.listview_item, items);
             listView.setAdapter(adapter);
 
         } else {
 
-            adapter = new ArrayAdapter<String>(this, R.layout.listview_item, basketItems);
-            listView.setAdapter(adapter);
         }
 
 
@@ -116,14 +119,25 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         }
     }
 
+    public List<Item> loadData() {
+
+        for (Item i : Session.items) {
+            if (i.getCount() > 0) {
+                Session.basket.addItems(i);
+            }
+        }
+        return Session.basket.getItems();
+    }
+
     public void updateData() {
         total = 0;
         for (int i = 0; i < itemList.size(); i++) {
-
+            basket = new String[itemList.size()];
             basket[i] = itemList.get(i).getName();
             total += itemList.get(i).getPrice() * itemList.get(i).getCount();
             Log.d(TAG, String.valueOf(total));
             txtBasketTotal.setText(String.valueOf(total));
+            Session.basket.setTotal(total);
 
         }
     }

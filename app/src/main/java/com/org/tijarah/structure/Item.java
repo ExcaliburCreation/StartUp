@@ -113,8 +113,8 @@ public class Item implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public int getQuantity() {
-        return Integer.parseInt(quantity);
+    public String getQuantity() {
+        return quantity;
     }
 
     public void setQuantity(String quantity) {
@@ -175,5 +175,39 @@ public class Item implements Serializable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
 
+        Item item = (Item) o;
+
+        if (!getUnit().equals(item.getUnit())) return false;
+        if (getPrice() != (item.getPrice())) return false;
+        if (getName() != null ? !getName().equals(item.getName()) : item.getName() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(item.getDescription()) : item.getDescription() != null)
+            return false;
+        if (getImageUrl() != null ? !getImageUrl().equals(item.getImageUrl()) : item.getImageUrl() != null)
+            return false;
+        if (getCount() != (item.getCount())) return false;
+        if (getCategory() != null ? !getCategory().equals(item.getCategory()) : item.getCategory() != null)
+            return false;
+        return getIsAdded() != null ? getIsAdded().equals(item.getIsAdded()) : item.getIsAdded() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUnit().hashCode();
+        result = 31 * result + Double.valueOf(getPrice()).hashCode();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getImageUrl() != null ? getImageUrl().hashCode() : 0);
+        result = 31 * result + Integer.valueOf(getQuantity()).hashCode();
+        result = 31 * result + Integer.valueOf(getCount()).hashCode();
+        result = 31 * result + (getCategory() != null ? getCategory().hashCode() : 0);
+        result = 31 * result + (getIsAdded() != null ? getIsAdded().hashCode() : 0);
+        return result;
+    }
 }

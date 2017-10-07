@@ -32,18 +32,24 @@ import java.util.List;
 public class SplashScreen extends AppCompatActivity {
 
     private static final String TAG = SplashScreen.class.getSimpleName();
-    List<Item> itemList;
+    Session session;
+    Basket basket;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        session = new Session();
+        basket = new Basket();
+
 
         try {
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-                WifiManager manager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setMessage(R.string.splash_dialog_message);
@@ -81,7 +87,7 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
+                            Intent intent = new Intent(SplashScreen.this, CategoriesActivity.class);
                             startActivity(intent);
 
                             SplashScreen.this.finish();

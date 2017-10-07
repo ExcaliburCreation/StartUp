@@ -6,8 +6,9 @@ package com.org.tijarah.structure;
 
 public class Category {
 
-    private String Name;
+
     private String id;
+    private String Name;
 
     public Category(){}
 

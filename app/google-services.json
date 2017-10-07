@@ -22,6 +22,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyCfDWh0UNoYvc2ouj8OpiWh-jT_0KxBZho"
+        },
+        {
+          "current_key": "AIzaSyD7AhmkXeNg5G2ttkC_HxBRGCFXjKGFLbs"
         }
       ],
       "services": {
@@ -31,6 +34,53 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722101621295:android:4736396f322e4bcd",
+        "android_client_info": {
+          "package_name": "com.example.excaliburcreations.customerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722101621295-ss51b55rp9qq6fv1cgp3t4f2hv1erp6p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.excaliburcreations.customerapp",
+            "certificate_hash": "51eb9c77bf50e4abe8cf4966f72441588175c8c2"
+          }
+        },
+        {
+          "client_id": "722101621295-fakakci6bq8gm8vfjgs1tm589l0uo3jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfDWh0UNoYvc2ouj8OpiWh-jT_0KxBZho"
+        },
+        {
+          "current_key": "AIzaSyD7AhmkXeNg5G2ttkC_HxBRGCFXjKGFLbs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722101621295-fakakci6bq8gm8vfjgs1tm589l0uo3jl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
