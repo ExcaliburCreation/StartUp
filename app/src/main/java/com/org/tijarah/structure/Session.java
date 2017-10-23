@@ -42,14 +42,11 @@ public class Session implements Serializable{
 
     @Nullable
     public static Item getItem(Item item) {
-        if(items.contains(item)){
+
             for(Item i : items){
-                if(i.getName().equals(item.getName())){
+                if(i.equals(item)){
                     return i;
                 }
-            }
-        }else{
-            return null;
         }
 
         return item;

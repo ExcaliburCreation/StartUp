@@ -89,6 +89,7 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
         getSupportActionBar().setTitle("Location");
 
         Session session = new Session();
+        Basket basket = new Basket();
 
         editTextCity = (EditText) findViewById(R.id.editTextCity);
         editTextArea = (EditText) findViewById(R.id.editTextArea);

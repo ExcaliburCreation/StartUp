@@ -28,8 +28,6 @@ public class SelectedItemActivity extends AppCompatActivity {
     Intent intent;
 
     String name = "";
-    String count = "";
-    //String imageUrl= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +47,24 @@ public class SelectedItemActivity extends AppCompatActivity {
         txtItemCount = (TextView) findViewById(R.id.txtItemCount);
 
         imgSelectedItem = (ImageView) findViewById(R.id.imgSelectedItem);
+        final int position = intent.getIntExtra("position", 0);
 
+//        final Item item = (Item) getIntent().getSerializableExtra("item");
 
-        final int id = intent.getIntExtra("item", 1);
-
-        final Item item = (Item) getIntent().getSerializableExtra("itemsActivity");
-
-     //   Log.d("Null object", item.toString());
-
-        if (item.getCount() == 0) {
-            btnAddToBasket.setEnabled(false);
-
-        } else {
-            btnAddToBasket.setEnabled(true);
-        }
-        txtSelectedItemName.setText(item.getName());
-        txtItemCount.setText(String.valueOf(item.getCount()));
-        //      Log.d(TAG, item.toString());
-        btnAddToBasket.setEnabled(false);
         setTitle(name);
+
+        txtSelectedItemName.setText(Session.items.get(position).getName());
+        txtItemCount.setText(String.valueOf(Session.items.get(position).getCount()));
+
+//        Log.d("Add Item Button ", item.toString());
+        Log.d("Session", Session.getItems().toString());
+        Log.d("Basket", Session.basket.getItems().toString());
 
         btnAddToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedItemActivity.this, BasketActivity.class);
-                Session.basket.addItems(item);
+                //     Session.basket.addItems(item);
                 startActivity(intent);
             }
         });
@@ -82,59 +73,35 @@ public class SelectedItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(SelectedItemActivity.this, "Add", Toast.LENGTH_LONG).show();
-                int count = item.getCount();
 
-                txtItemCount.setText(String.valueOf(++count));
-                Session.items.get(id).setCount(String.valueOf(count));
+                int count = Session.items.get(position).getCount();
+                Session.items.get(position).setCount(String.valueOf(++count));
 
-                if (!item.isAdded()) {
-                    Session.basket.addItems(item);
-                    Session.basket.getItem(item).setCount(String.valueOf(count));
-                    Session.basket.getItem(item).setAdded(true);
-//                    Session.items.get(id).setAdded(true);
+                txtItemCount.setText(String.valueOf(count));
 
-                } else {
-                     Session.basket.getItem(item).setCount(String.valueOf(count));
-                }
-                if (item.getCount() > 0) {
-                    btnAddToBasket.setEnabled(true);
-
-                } else {
-                    btnAddToBasket.setEnabled(false);
-                }
+                //   Log.d("Add Button Selected ", item.toString());
+                Log.d("Session", Session.getItems().toString());
+                Log.d("Basket", Session.basket.getItems().toString());
+                Log.d("Session Length", String.valueOf(Session.getItems().size()));
+                Log.d("Basket", String.valueOf(Session.basket.getItems().size()));
             }
         });
 
         btnItemRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SelectedItemActivity.this, "Remove", Toast.LENGTH_LONG).show();
-                int count = item.getCount();
 
-                if (count == 0) {
+                int count = Session.items.get(position).getCount();
+                if (count > 0) {
+                    Session.items.get(position).setCount(String.valueOf(--count));
 
-                    Session.items.get(id).setAdded(false);
-
-                    Session.basket.removeItem(item);
-//                    Session.basket.getItem(item).setAdded(false);
-                } else {
-
-                    txtItemCount.setText(String.valueOf(--count));
-                    Session.items.get(id).setCount(String.valueOf(count));
-
-                    if (count == 0) {
-                        Session.basket.removeItem(item);
-                        Session.items.get(id).setAdded(false);
-                    }
-
-
+                    txtItemCount.setText(String.valueOf(count));
                 }
-
-                if (item.getCount() <= 0) {
-                    btnAddToBasket.setEnabled(false);
-
-                }
-
+//                Log.d("Remove Button Selected ", item.toString());
+                Log.d("Session", Session.getItems().toString());
+                Log.d("Basket", Session.basket.getItems().toString());
+                Log.d("Session Length", String.valueOf(Session.getItems().size()));
+                Log.d("Basket", String.valueOf(Session.basket.getItems().size()));
 
             }
         });

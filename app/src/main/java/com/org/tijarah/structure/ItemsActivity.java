@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,8 +36,7 @@ public class ItemsActivity extends AppCompatActivity {
 
     RecyclerView recyclerViewItems;
     CollapsingToolbarLayout collapsingToolbarLayout;
-
-    ItemsAdapter adapter;
+    //ItemsAdapter adapter;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -66,32 +66,6 @@ public class ItemsActivity extends AppCompatActivity {
 
         String catPosition = getIntent().getStringExtra("position");
 
-       /* databaseReference.child("Categories").child(catPosition).child("Items").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> data = dataSnapshot.getChildren();
-
-                for (DataSnapshot i : data) {
-
-                    Item item = i.getValue(Item.class);
-
-                    Log.d(TAG + "RET", i.getValue().toString());
-                    Log.d(TAG + "RETI", item.toString());
-                    keys.add(item);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-*/
-
         itemList = new ArrayList<Item>();
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Item, ItemHolder>(
@@ -99,17 +73,17 @@ public class ItemsActivity extends AppCompatActivity {
                 R.layout.item_grid,
                 ItemHolder.class,
                 databaseReference.child("Categories").child(catPosition).child("Items").getRef()) {
+
             @Override
-            protected void populateViewHolder(final ItemHolder viewHolder, final Item model, int position) {
-                Item item = model;
-                itemList.add(item);
+            protected void populateViewHolder(final ItemHolder viewHolder, final Item model, final int position) {
+
+                itemList.add(model);
 
                 Session.setItems(itemList);
-                Session.basket.setItems(itemList);
 
-           //     final Item item = Session.items.get(position);
-                viewHolder.textViewItemName.setText(model.getName());
-                viewHolder.textViewItemPrice.setText("Rs: "+String.valueOf(model.getPrice()  ));
+                Log.d("Items Populate View", model.toString());
+                Log.d("Session", Session.getItems().toString());
+                Log.d("Basket", Session.basket.getItems().toString());
 
                 viewHolder.btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -118,21 +92,17 @@ public class ItemsActivity extends AppCompatActivity {
 
                         int count = model.getCount();
 
-                        viewHolder.itemImage.setVisibility(View.GONE);
                         viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
                         viewHolder.textViewCount.setVisibility(View.VISIBLE);
 
                         count++;
                         viewHolder.textViewCount.setText(String.valueOf(count));
-                        if (Session.basket.getItems().contains(model)) {
-                            Session.basket.getItem(model).setCount(String.valueOf(count));
-                            Session.getItem(model).setCount(String.valueOf(count));
-                        } else {
-                            Session.basket.addItems(model);
-                            Session.basket.getItem(model).setCount(String.valueOf(count));
-                            Session.getItem(model).setCount(String.valueOf(count));
-                        }
-                        model.setAdded(true);
+                        Session.items.get(position).setCount(String.valueOf(count));
+                        Session.items.get(position).setAdded(true);
+
+                        Log.d("Add Item Button ", model.toString());
+                        Log.d("Session", Session.getItems().toString());
+                        Log.d("Basket", Session.basket.getItems().toString());
                     }
                 });
                 
@@ -140,60 +110,70 @@ public class ItemsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(ItemsActivity.this, "Remove", Toast.LENGTH_SHORT).show();
+                        int count = Session.items.get(position).getCount();
 
-                        if (model.getCount() == 0) {
-                            viewHolder.itemImage.setVisibility(View.VISIBLE);
-                            viewHolder.itemImage.setBackgroundColor(Color.DKGRAY);
+                        if (count == 0) {
+
                             viewHolder.textViewCount.setVisibility(View.GONE);
-                            Session.basket.removeItem(model);
 
-                        } else if (model.getCount() > 0) {
-
-                            int count = model.getCount();
+                        } else if (count > 0) {
+                            
                             count--;
                             viewHolder.textViewCount.setText(String.valueOf(count));
-                            model.setCount(String.valueOf(count));
+                            Session.items.get(position).setCount(String.valueOf(count));
 
                             if (count == 0) {
-
-                                viewHolder.itemImage.setVisibility(View.VISIBLE);
-                                viewHolder.itemImage.setBackgroundColor(Color.DKGRAY);
                                 viewHolder.textViewCount.setVisibility(View.GONE);
 
                                 if (Session.basket.getItems().contains(model)) {
-                                    if (model.getCount() == 0) {
-                                        Session.basket.removeItem(model);
+                                    if (count == 0) {
+                                    //    Session.basket.removeItem(model);
                                     } else {
-                                        Session.basket.getItem(model).setCount(String.valueOf(count));
-                                        Session.getItem(model).setCount(String.valueOf(count));
+                                        Session.items.get(position).setCount(String.valueOf(count));
 
                                     }
                                 }
 
                             }
                         }
+
+                        Log.d("Remove Item Button ", model.toString());
+                        Log.d("Session", Session.getItems().toString());
+                        Log.d("Basket", Session.basket.getItems().toString());
                     }
                 });
-                Log.d(TAG + "model", model.toString());
-                Log.d(TAG + "Abc", Session.getItems().toString());
-             /* if (model.getCount() > 0) {
-                    viewHolder.itemImage.setVisibility(View.GONE);
-                    viewHolder.textViewCount.setVisibility(View.VISIBLE);
-                    viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
-                    viewHolder.textViewCount.setText(String.valueOf(model.getCount()));
-                }*/
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(ItemsActivity.this, SelectedItemActivity.class);
-                        intent.putExtra("itemsActivity", model);
+                        intent.putExtra("position", position);
                         startActivity(intent);
                     }
                 });
 
 
             }
+
+            @Override
+            public void onBindViewHolder(ItemHolder viewHolder, int position) {
+                super.onBindViewHolder(viewHolder, position);
+
+                Log.d(TAG, "BINDDDDD");
+                Item item = Session.items.get(position);
+                viewHolder.textViewItemName.setText(item.getName());
+                viewHolder.textViewItemPrice.setText("Rs: "+String.valueOf(item.getPrice()  ));
+
+                if (Session.items.get(position).getCount() > 0){
+                    viewHolder.textViewCount.setBackgroundColor(Color.DKGRAY);
+                    viewHolder.textViewCount.setVisibility(View.VISIBLE);
+                    viewHolder.textViewCount.setText(String.valueOf(item.getCount()));
+                }
+                else{
+                    viewHolder.textViewCount.setVisibility(View.GONE);
+                }
+            }
+
         };
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -209,13 +189,12 @@ public class ItemsActivity extends AppCompatActivity {
 
         //  Session.basket.setItems(itemList);
 
-        adapter = new ItemsAdapter(Session.items);
+        //adapter = new ItemsAdapter(Session.items);
 
         recyclerViewItems.setLayoutManager(layoutManager);
         recyclerViewItems.setAdapter(firebaseRecyclerAdapter);
 
 //        Log.d(TAG, itemList.toString());
-
 
     }
 
@@ -247,13 +226,13 @@ public class ItemsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        firebaseRecyclerAdapter.notifyDataSetChanged();
     }
 
     public static class ItemHolder extends RecyclerView.ViewHolder {
 
         View mView;
-        ImageView itemImage;
+      //  ImageView itemImage;
         Button btnAdd;
         Button btnRemove;
         TextView textViewItemName;
@@ -264,7 +243,7 @@ public class ItemsActivity extends AppCompatActivity {
             super(itemView);
 
             mView = itemView;
-            itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
+           // itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
             btnAdd = (Button) itemView.findViewById(R.id.btnAdd);
             btnRemove = (Button) itemView.findViewById(R.id.btnRemove);
             textViewItemName = (TextView) itemView.findViewById(R.id.textViewItemName);

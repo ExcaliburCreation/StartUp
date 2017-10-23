@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +54,6 @@ public class CategoriesActivity extends AppCompatActivity {
         fbdb = fbdb.getInstance();
         dbr = fbdb.getReference();
 
-
         catRecyclerView = (RecyclerView) findViewById(R.id.catRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -69,6 +69,16 @@ public class CategoriesActivity extends AppCompatActivity {
             protected void populateViewHolder(ViewHolder viewHolder, final Category model, final int position) {
 
                 viewHolder.textCatName.setText(model.getName());
+
+                Log.d("Catego Populate View", model.toString());
+                Log.d("Session", Session.getItems().toString());
+                Log.d("Basket", Session.basket.getItems().toString());
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+                int width = displayMetrics.widthPixels;
+                viewHolder.textCatName.setTextSize( width / 20 );
                 Log.d(TAG, "Recycler View :" + model.getName());
 
 
@@ -99,13 +109,11 @@ public class CategoriesActivity extends AppCompatActivity {
 
         View mView;
         TextView textCatName;
-        ImageView imageViewCategory;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            imageViewCategory = (ImageView) itemView.findViewById(R.id.imageViewCategory);
             textCatName = (TextView) itemView.findViewById(R.id.textCatName);
 
         }
