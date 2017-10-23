@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.cast.framework.*;
+import com.google.android.gms.games.request.OnRequestReceivedListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,11 +36,35 @@ public class PaymentSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Map<String, Basket> order = new HashMap<String, Basket>();
-                order.put(new Date().toString() + "-Rayan", Session.basket);
-                usersRef.setValue(order);
+                Map<String, Order> order = new HashMap<String, Order>();
+                Order o = new Order();
+                o.setBasket(Session.basket);
+                o.setDatetime(new Date());
+                order.put("aa", o);
+                usersRef.setValue(o);
             }
         });
 
+    }
+
+    private class Order{
+        Date datetime;
+        Basket basket;
+
+        public Date getDatetime() {
+            return datetime;
+        }
+
+        public void setDatetime(Date datetime) {
+            this.datetime = datetime;
+        }
+
+        public Basket getBasket() {
+            return basket;
+        }
+
+        public void setBasket(Basket basket) {
+            this.basket = basket;
+        }
     }
 }
