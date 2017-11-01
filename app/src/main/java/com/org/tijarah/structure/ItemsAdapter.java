@@ -154,7 +154,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
+         //   itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
             btnAdd = (Button) itemView.findViewById(R.id.btnAdd);
             btnRemove = (Button) itemView.findViewById(R.id.btnRemove);
             textViewItemName = (TextView) itemView.findViewById(R.id.textViewItemName);

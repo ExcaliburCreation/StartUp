@@ -62,18 +62,18 @@ public class GridViewAdapter extends BaseAdapter {
 
             grid = view;
         }
-        final ImageView itemImage = (ImageView) grid.findViewById(R.id.itemImage);
+       // final ImageView itemImage = (ImageView) grid.findViewById(R.id.itemImage);
         //      ImageView imageViewOverlay = (ImageView) grid.findViewById(R.id.imageViewOverlay);
         Button btnRemove = (Button) grid.findViewById(R.id.btnRemove);
         Button btnAdd = (Button) grid.findViewById(R.id.btnAdd);
         TextView textViewItemName = (TextView) grid.findViewById(R.id.textViewItemName);
         final TextView textViewCount = (TextView) grid.findViewById(R.id.textViewCount);
 
-        itemImage.setImageResource(R.drawable.supermarkets);
+      //  itemImage.setImageResource(R.drawable.supermarkets);
 
         textViewItemName.setText(getItem(i).getName());
 
-        itemImage.setOnClickListener(new View.OnClickListener() {
+       /* itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Item Image Clicked", Toast.LENGTH_LONG).show();
@@ -81,13 +81,13 @@ public class GridViewAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, SelectedItemActivity.class);
                 context.startActivity(intent);
             }
-        });
+        });*/
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int count = item.getCount();
-                itemImage.setVisibility(View.GONE);
+           //     itemImage.setVisibility(View.GONE);
                 textViewCount.setVisibility(View.VISIBLE);
                 textViewCount.setBackgroundColor(Color.DKGRAY);
                 count++;
@@ -110,8 +110,8 @@ public class GridViewAdapter extends BaseAdapter {
             public void onClick(View view) {
 
                 if (item.getCount() == 0) {
-                    itemImage.setVisibility(View.VISIBLE);
-                    itemImage.setImageResource(R.drawable.supermarkets);
+//                    itemImage.setVisibility(View.VISIBLE);
+//                    itemImage.setImageResource(R.drawable.supermarkets);
                     textViewCount.setVisibility(View.GONE);
                     Session.basket.removeItem(item);
 
@@ -124,8 +124,8 @@ public class GridViewAdapter extends BaseAdapter {
 
                     if (count == 0) {
 
-                        itemImage.setVisibility(View.VISIBLE);
-                        itemImage.setImageResource(R.drawable.supermarkets);
+//                        itemImage.setVisibility(View.VISIBLE);
+//                        itemImage.setImageResource(R.drawable.supermarkets);
                         textViewCount.setVisibility(View.GONE);
 
                         if(Session.basket.getItems().contains(item)){
