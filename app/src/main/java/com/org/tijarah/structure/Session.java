@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Session implements Serializable{
 
+    public static String user;
     public static Basket basket;
     public static List<Item> items;
 

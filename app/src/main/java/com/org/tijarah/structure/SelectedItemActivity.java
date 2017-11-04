@@ -60,6 +60,8 @@ public class SelectedItemActivity extends AppCompatActivity {
         Log.d("Session", Session.getItems().toString());
         Log.d("Basket", Session.basket.getItems().toString());
 
+        btnAddToBasket.setVisibility(View.GONE);
+/*
         btnAddToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +70,7 @@ public class SelectedItemActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+*/
 
         btnItemAdd.setOnClickListener(new View.OnClickListener() {
             @Override

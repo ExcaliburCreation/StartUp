@@ -38,6 +38,7 @@ public class PaymentSelectActivity extends AppCompatActivity {
 
                 Map<String, Order> order = new HashMap<String, Order>();
                 Order o = new Order();
+                o.setUser(Session.user);
                 o.setBasket(Session.basket);
                 o.setDatetime(new Date());
                 order.put("aa", o);
@@ -48,8 +49,17 @@ public class PaymentSelectActivity extends AppCompatActivity {
     }
 
     private class Order{
+        String user;
         Date datetime;
         Basket basket;
+
+        public String getUser() {
+            return user;
+        }
+
+        public void setUser(String user) {
+            this.user = user;
+        }
 
         public Date getDatetime() {
             return datetime;

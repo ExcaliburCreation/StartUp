@@ -73,14 +73,17 @@ public class LoginActivity extends AppCompatActivity {
 
                 progressBarLogin.setVisibility(View.VISIBLE);
 
-                firebaseAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        progressBarLogin.setVisibility(View.GONE);
-                        Intent intent = new Intent(LoginActivity.this, CategoriesActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if(task.isSuccessful()) {
+                            Session.user = firebaseAuth.getCurrentUser().getEmail();
+                            progressBarLogin.setVisibility(View.GONE);
+                            Intent intent = new Intent(LoginActivity.this, CategoriesActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 });
 
