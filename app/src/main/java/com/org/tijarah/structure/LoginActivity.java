@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         progressBarLogin.setVisibility(View.GONE);
-                        Intent intent = new Intent(LoginActivity.this, CategoriesActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
                     }
