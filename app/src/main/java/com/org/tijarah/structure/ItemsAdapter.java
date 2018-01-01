@@ -43,7 +43,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         holder.textViewItemName.setText(item.getName());
 
         if (item.getCount() > 0) {
-            holder.itemImage.setVisibility(View.GONE);
+//            holder.itemImage.setVisibility(View.GONE);
             holder.textViewCount.setVisibility(View.VISIBLE);
             holder.textViewCount.setBackgroundColor(Color.DKGRAY);
             holder.textViewCount.setText(String.valueOf(item.getCount()));
@@ -56,7 +56,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
                 int count = item.getCount();
 
-                holder.itemImage.setVisibility(View.GONE);
+//                holder.itemImage.setVisibility(View.GONE);
                 holder.textViewCount.setVisibility(View.VISIBLE);
                 holder.textViewCount.setBackgroundColor(Color.DKGRAY);
                 count++;
@@ -82,8 +82,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 Toast.makeText(view.getContext(), "Remove", Toast.LENGTH_SHORT).show();
 
                 if (item.getCount() == 0) {
-                    holder.itemImage.setVisibility(View.VISIBLE);
-                    holder.itemImage.setBackgroundColor(Color.DKGRAY);
+//                    holder.itemImage.setVisibility(View.VISIBLE);
+//                    holder.itemImage.setBackgroundColor(Color.DKGRAY);
                     holder.textViewCount.setVisibility(View.GONE);
                     Session.basket.removeItem(item);
 
@@ -96,8 +96,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
                     if (count == 0) {
 
-                        holder.itemImage.setVisibility(View.VISIBLE);
-                        holder.itemImage.setBackgroundColor(Color.DKGRAY);
+//                        holder.itemImage.setVisibility(View.VISIBLE);
+//                        holder.itemImage.setBackgroundColor(Color.DKGRAY);
                         holder.textViewCount.setVisibility(View.GONE);
 
                         if (Session.basket.getItems().contains(item)) {
@@ -116,15 +116,15 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             }
         });
 
-        holder.itemImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SelectedItemActivity.class);
-                intent.putExtra("item", itemsList.get(position).getId() - 1);
-                view.getContext().startActivity(intent);
-
-            }
-        });
+//        holder.itemImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(view.getContext(), SelectedItemActivity.class);
+//                intent.putExtra("item", itemsList.get(position).getId() - 1);
+//                view.getContext().startActivity(intent);
+//
+//            }
+//        });
 
         holder.textViewCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +145,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView itemImage;
+//        ImageView itemImage;
         Button btnAdd;
         Button btnRemove;
         TextView textViewItemName;
@@ -154,7 +154,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
+//            itemImage = (ImageView) itemView.findViewById(R.id.itemImage);
             btnAdd = (Button) itemView.findViewById(R.id.btnAdd);
             btnRemove = (Button) itemView.findViewById(R.id.btnRemove);
             textViewItemName = (TextView) itemView.findViewById(R.id.textViewItemName);

@@ -45,7 +45,7 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View grid;
+      /*  View grid;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final Item item = itemList.get(i);
@@ -145,8 +145,8 @@ public class GridViewAdapter extends BaseAdapter {
                     }
                 }
             }
-        });
-        return grid;
+        });*/
+        return view;
     }
 
     @Override

@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="320dp"
         android:layout_marginTop="100dp"
 
         android:elevation="30dp"
@@ -76,6 +76,26 @@
             android:background="@drawable/rec_login"
             android:shadowColor="@color/red_dark"
             android:text="Login"
+            android:textColor="@android:color/white" />
+
+        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="34dp"
+            android:text="New to Tijarah? Sign up"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="34dp"
+            android:background="@drawable/rec_login"
+            android:shadowColor="@color/red_dark"
+            android:text="Sign up"
             android:textColor="@android:color/white" />
 
         />

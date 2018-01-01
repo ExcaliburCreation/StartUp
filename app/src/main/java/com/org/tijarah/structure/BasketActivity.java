@@ -63,12 +63,12 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         btnFinalizeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BasketActivity.this, SignInActivity.class);
+                Intent intent = new Intent(BasketActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(BasketActivity.this, SelectedItemActivity.class);
@@ -76,7 +76,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
                 Log.d(TAG, Session.getItems().toString());
                 startActivity(intent);
             }
-        });
+        });*/
 
 
     }

@@ -268,10 +268,11 @@ public class MapsActivity extends AppCompatActivity implements Serializable, OnM
 
                             List<Address> addresses = geocoder.getFromLocation(mLikelyPlaceLatLngs[0].latitude, mLikelyPlaceLatLngs[0].longitude, 1);
 
-                            Log.d("geo", addresses.get(0).toString());
-
-                            editTextCity.setText(addresses.get(0).getAddressLine(1));
-                            editTextArea.setText(addresses.get(0).getAddressLine(0));
+                            Log.d("geo", addresses.toString());
+                            String [] address = addresses.get(0).getAddressLine(0).split(",");
+                            Log.d("adress", address.toString());
+                            editTextCity.setText(address[1].trim());
+                            editTextArea.setText(address[0].trim());
 
                             btnContinue.setEnabled(true);
                         } catch (Exception e) {

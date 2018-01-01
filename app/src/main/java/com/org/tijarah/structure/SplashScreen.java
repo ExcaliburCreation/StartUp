@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -87,7 +88,7 @@ public class SplashScreen extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            Intent intent = new Intent(SplashScreen.this, CategoriesActivity.class);
+                            Intent intent = new Intent(SplashScreen.this, MapsActivity.class);
                             startActivity(intent);
 
                             SplashScreen.this.finish();

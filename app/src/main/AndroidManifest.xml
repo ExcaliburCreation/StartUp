@@ -39,22 +39,28 @@
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SelectStoreActivity" />
-        <activity android:name=".CategoriesActivity"
+        <activity
+            android:name=".CategoriesActivity"
             android:label="Category" />
         <activity
             android:name=".BaseActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ItemsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Items"/>
-        <activity android:name=".SelectedItemActivity"
-            android:label="Item"/>
-        <activity android:name=".BasketActivity"
-            android:label="Basket"/>
-        <activity android:name=".SignInActivity"
-            android:label="Sign in"/>
-        <activity android:name=".PaymentSelectActivity"
-            android:label="Payment"/>
+        <activity
+            android:name=".ItemsActivity"
+            android:label="Items"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SelectedItemActivity"
+            android:label="Item" />
+        <activity
+            android:name=".BasketActivity"
+            android:label="Basket" />
+        <activity
+            android:name=".SignInActivity"
+            android:label="Sign in" />
+        <activity
+            android:name=".PaymentSelectActivity"
+            android:label="Payment" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -75,7 +81,9 @@
             android:name=".NavigationDrawer"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".LocationActivity" />
+        <activity android:name=".CheckoutActivity" />
+        <activity android:name=".SignupActivity"></activity>
     </application>
 
 </manifest>
