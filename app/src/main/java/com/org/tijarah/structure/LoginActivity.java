@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
 
                             progressBarLogin.setVisibility(View.GONE);
-                            Intent intent = new Intent(LoginActivity.this, CheckoutActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, PaymentSelectActivity.class);
 
                             startActivity(intent);
                             finish();
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null) {
 
-            startActivity(new Intent(LoginActivity.this, CheckoutActivity.class));
+            startActivity(new Intent(LoginActivity.this, PaymentSelectActivity.class));
             finish();
 
         }

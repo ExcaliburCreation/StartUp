@@ -100,6 +100,8 @@ public class ItemsActivity extends AppCompatActivity {
                         Session.items.get(position).setCount(String.valueOf(count));
                         Session.items.get(position).setAdded(true);
 
+                        Session.basket.setItems(itemList);
+
                         Log.d("Add Item Button ", model.toString());
                         Log.d("Session", Session.getItems().toString());
                         Log.d("Basket", Session.basket.getItems().toString());
@@ -136,7 +138,7 @@ public class ItemsActivity extends AppCompatActivity {
 
                             }
                         }
-
+                        Session.basket.setItems(itemList);
                         Log.d("Remove Item Button ", model.toString());
                         Log.d("Session", Session.getItems().toString());
                         Log.d("Basket", Session.basket.getItems().toString());

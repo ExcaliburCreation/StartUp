@@ -32,18 +32,18 @@ public class BasketAdapter extends ArrayAdapter<Item>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null) {
 
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.categories,parent,false);
-
-
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item,parent,false);
         }
 
-        TextView name = (TextView)convertView.findViewById(R.id.CatNames);
+        TextView textViewItemName = (TextView)convertView.findViewById(R.id.textViewItemName);
+        TextView textViewItemQuantity = (TextView)convertView.findViewById(R.id.textViewItemQuantity);
+        TextView textViewItemPrice = (TextView)convertView.findViewById(R.id.textViewItemPrice);
 
-        Item item = getItem(position);
+        Item item = Session.getItems().get(position);
 
-        name.setText(item.getName());
-
-
+        textViewItemName.setText(item.getName());
+        textViewItemQuantity.setText(String.valueOf(item.getCount()));
+        textViewItemPrice.setText(String.valueOf(item.getPrice()));
 
         return convertView;
     }

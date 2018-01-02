@@ -12,6 +12,41 @@
     tools:context="com.org.tijarah.structure.PaymentSelectActivity">
 
 
+    <ListView
+        android:id="@+id/checkout_list"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Total : Rs"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtCheckoutTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="0.00"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+    </LinearLayout>
 
     <TextView
         android:text="Select Payment Method"
@@ -20,15 +55,9 @@
         android:layout_height="wrap_content"
          />
     <Button
-        android:text="Cash On Delivery"
+        android:text="CHECKOUT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnCashOnDel"
          />
-    <Button
-        android:text="Visa Card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnVisaCard"
-        />
 </LinearLayout>

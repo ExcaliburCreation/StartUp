@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@android:color/background_light"
-    android:text="Item"
-    android:textSize="30dip"
-    android:textAlignment="center"
-    android:textColor="@android:color/black"
-     />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip">
+
+    <TextView
+        android:id="@+id/textViewItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:gravity="left"
+        android:layout_gravity="left" />
+
+    <TextView
+        android:id="@+id/textViewItemQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Item"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_gravity="right" />
+
+    <TextView
+        android:id="@+id/textViewItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="right"
+        android:text="Item"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_gravity="right" />
+</LinearLayout>
+

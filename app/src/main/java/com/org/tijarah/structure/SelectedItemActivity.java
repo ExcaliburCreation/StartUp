@@ -52,9 +52,9 @@ public class SelectedItemActivity extends AppCompatActivity {
 //        final Item item = (Item) getIntent().getSerializableExtra("item");
 
         setTitle(name);
-
-        txtSelectedItemName.setText(Session.items.get(position).getName());
-        txtItemCount.setText(String.valueOf(Session.items.get(position).getCount()));
+        Item item = Session.getItems().get(position);
+        txtSelectedItemName.setText(item.getName());
+        txtItemCount.setText(String.valueOf(item.getCount()));
 
 //        Log.d("Add Item Button ", item.toString());
         Log.d("Session", Session.getItems().toString());
@@ -74,8 +74,8 @@ public class SelectedItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(SelectedItemActivity.this, "Add", Toast.LENGTH_LONG).show();
 
-                int count = Session.items.get(position).getCount();
-                Session.items.get(position).setCount(String.valueOf(++count));
+                int count = Session.getItems().get(position).getCount();
+                Session.getItems().get(position).setCount(String.valueOf(++count));
 
                 txtItemCount.setText(String.valueOf(count));
 
