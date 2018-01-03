@@ -46,7 +46,7 @@ public class PaymentSelectActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.checkout_list);
 
         btnCashOnDel = (Button) findViewById(R.id.btnCashOnDel);
-        final DatabaseReference usersRef = dbr.child("RAYAN").push();
+        final DatabaseReference usersRef = dbr.child("order").push();
 
 
         BasketAdapter adapter = new BasketAdapter(this, Session.basket.getItems());
