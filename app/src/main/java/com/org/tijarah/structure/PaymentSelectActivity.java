@@ -46,7 +46,7 @@ public class PaymentSelectActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.checkout_list);
 
         btnCashOnDel = (Button) findViewById(R.id.btnCashOnDel);
-        final DatabaseReference usersRef = dbr.child("Orders").push();
+        final DatabaseReference usersRef = dbr.child("RAYAN").push();
 
 
         BasketAdapter adapter = new BasketAdapter(this, Session.basket.getItems());
@@ -57,10 +57,8 @@ public class PaymentSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Order o = new Order();
-                o.setBasket(Session.basket);
-                o.setDatetime(new Date());
-                usersRef.setValue(o);
+                usersRef.setValue(Session.basket.getItems());
+
             }
         });
 
@@ -112,7 +110,7 @@ public class PaymentSelectActivity extends AppCompatActivity {
 
     private class Order{
         Date datetime;
-        Basket basket;
+        List<Item> basket;
 
         public Date getDatetime() {
             return datetime;
@@ -122,11 +120,11 @@ public class PaymentSelectActivity extends AppCompatActivity {
             this.datetime = datetime;
         }
 
-        public Basket getBasket() {
+        public List<Item> getBasket() {
             return basket;
         }
 
-        public void setBasket(Basket basket) {
+        public void setBasket(List<Item> basket) {
             this.basket = basket;
         }
     }

@@ -100,8 +100,11 @@ public class ItemsActivity extends AppCompatActivity {
                         Session.items.get(position).setCount(String.valueOf(count));
                         Session.items.get(position).setAdded(true);
 
-                        Session.basket.setItems(itemList);
-
+                        if(!Session.basket.getItems().contains(Session.items.get(position))) {
+                            Session.basket.getItems().add(Session.items.get(position));
+                        }else{
+                            Session.basket.getItems().get(position).setCount(String.valueOf(Session.items.get(position).getCount()));
+                        }
                         Log.d("Add Item Button ", model.toString());
                         Log.d("Session", Session.getItems().toString());
                         Log.d("Basket", Session.basket.getItems().toString());
@@ -132,6 +135,7 @@ public class ItemsActivity extends AppCompatActivity {
                                     //    Session.basket.removeItem(model);
                                     } else {
                                         Session.items.get(position).setCount(String.valueOf(count));
+                                        Session.basket.getItems().get(position).setCount(String.valueOf(Session.items.get(position).getCount()));
 
                                     }
                                 }
@@ -145,16 +149,14 @@ public class ItemsActivity extends AppCompatActivity {
                     }
                 });
 
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                /*viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(ItemsActivity.this, SelectedItemActivity.class);
                         intent.putExtra("position", position);
                         startActivity(intent);
                     }
-                });
-
-
+                });*/
             }
 
             @Override

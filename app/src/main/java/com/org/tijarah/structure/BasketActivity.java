@@ -23,6 +23,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
     Button btnFinalizeOrder;
     TextView txtBasketTotal;
     //ArrayAdapter<String> adapter;
+    BasketAdapter adapter;
     List<Item> itemList = new ArrayList<Item>();
     ListView listView;
 
@@ -56,7 +57,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         }
 
 */
-        BasketAdapter adapter = new BasketAdapter(this, Session.basket.getItems());
+        adapter = new BasketAdapter(this, Session.basket.getItems());
         listView.setAdapter(adapter);
         txtBasketTotal = (TextView) findViewById(R.id.txtBasketTotal);
 
@@ -73,10 +74,12 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(BasketActivity.this, SelectedItemActivity.class);
-                intent.putExtra("position", i);
-                Log.d(TAG, Session.getItems().toString());
-                startActivity(intent);
+                if(Session.basket.getItems() != null && Session.basket.getItems().size() > 0) {
+                    Intent intent = new Intent(BasketActivity.this, SelectedItemActivity.class);
+                    intent.putExtra("position", i);
+                    Log.d(TAG, Session.getItems().toString());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -90,7 +93,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
 
         Log.d(TAG, "On restart");
         itemList = Session.basket.getItems();
-        // adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         Log.d(TAG, itemList.toString());
 
     }
@@ -102,7 +105,7 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
         Log.d(TAG, "On Resume");
         itemList = Session.basket.getItems();
         updateData();
-        // adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         Log.d(TAG, itemList.toString());
     }
 
@@ -119,13 +122,6 @@ public class BasketActivity extends AppCompatActivity implements Serializable {
 
             }
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-       // itemList.clear();
     }
 
     public List<Item> loadData() {

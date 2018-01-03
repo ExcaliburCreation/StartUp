@@ -52,7 +52,7 @@ public class SelectedItemActivity extends AppCompatActivity {
 //        final Item item = (Item) getIntent().getSerializableExtra("item");
 
         setTitle(name);
-        Item item = Session.getItems().get(position);
+        Item item = Session.basket.getItems().get(position);
         txtSelectedItemName.setText(item.getName());
         txtItemCount.setText(String.valueOf(item.getCount()));
 
@@ -74,8 +74,8 @@ public class SelectedItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(SelectedItemActivity.this, "Add", Toast.LENGTH_LONG).show();
 
-                int count = Session.getItems().get(position).getCount();
-                Session.getItems().get(position).setCount(String.valueOf(++count));
+                int count = Session.basket.getItems().get(position).getCount();
+                Session.basket.getItems().get(position).setCount(String.valueOf(++count));
 
                 txtItemCount.setText(String.valueOf(count));
 
@@ -91,9 +91,9 @@ public class SelectedItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                int count = Session.items.get(position).getCount();
+                int count = Session.basket.getItems().get(position).getCount();
                 if (count > 0) {
-                    Session.items.get(position).setCount(String.valueOf(--count));
+                    Session.basket.getItems().get(position).setCount(String.valueOf(--count));
 
                     txtItemCount.setText(String.valueOf(count));
                 }

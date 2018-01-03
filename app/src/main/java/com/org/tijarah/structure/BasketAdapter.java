@@ -39,7 +39,7 @@ public class BasketAdapter extends ArrayAdapter<Item>{
         TextView textViewItemQuantity = (TextView)convertView.findViewById(R.id.textViewItemQuantity);
         TextView textViewItemPrice = (TextView)convertView.findViewById(R.id.textViewItemPrice);
 
-        Item item = Session.getItems().get(position);
+        Item item = Session.basket.getItems().get(position);
 
         textViewItemName.setText(item.getName());
         textViewItemQuantity.setText(String.valueOf(item.getCount()));
